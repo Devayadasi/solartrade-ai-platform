@@ -101,7 +101,41 @@ def admin_login():
 
     session["admin_login"] = True
 
-    return home()
+    if request.method == "POST":
+
+        email = request.form.get("email")
+
+        password = request.form.get("password")
+
+        user = User.query.filter_by(
+            email=email,
+            role="admin"
+        ).first()
+
+        if user and check_password_hash(
+            user.password,
+            password
+        ):
+
+            session["user_id"] = user.id
+
+            session["role"] = user.role
+
+            session["name"] = user.name
+
+            session.pop("admin_login", None)
+
+            return redirect(
+                url_for("admin_dashboard")
+            )
+
+        flash("Invalid admin credentials")
+
+        return redirect(
+            url_for("admin_login")
+        )
+
+    return render_template("login.html")
 # =========================================
 # LOGIN PAGE
 # =========================================
