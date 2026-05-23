@@ -102,7 +102,6 @@ def admin_login():
     session["admin_login"] = True
 
     return home()
-
 # =========================================
 # LOGIN PAGE
 # =========================================
@@ -113,31 +112,63 @@ def home():
     if request.method == "POST":
 
         email = request.form.get("email")
+
         password = request.form.get("password")
 
-        user = User.query.filter_by(email=email).first()
+        role = request.form.get("role")
 
-        if user and check_password_hash(user.password, password):
+        user = User.query.filter_by(
+            email=email
+        ).first()
+
+        if user and check_password_hash(
+            user.password,
+            password
+        ):
+
+            if user.role != role:
+
+                flash("Invalid account type")
+
+                return redirect(
+                    url_for("home")
+                )
 
             # Set session for logged in user
             session["user_id"] = user.id
+
             session["role"] = user.role
+
             session["name"] = user.name
 
-            # Clear any temporary admin login flag
+            # Clear temporary admin login flag
             session.pop("admin_login", None)
 
             # Redirect based on role
             if user.role == "producer":
-                return redirect(url_for("producer_dashboard"))
+
+                return redirect(
+                    url_for("producer_dashboard")
+                )
+
             elif user.role == "consumer":
-                return redirect(url_for("consumer_dashboard"))
+
+                return redirect(
+                    url_for("consumer_dashboard")
+                )
+
             elif user.role == "admin":
-                return redirect(url_for("admin_dashboard"))
+
+                return redirect(
+                    url_for("admin_dashboard")
+                )
 
         # Invalid login
         flash("Invalid email or password")
-        return redirect(url_for("home"))
+
+        return redirect(
+            url_for("home")
+        )
 
     return render_template("login.html")
 

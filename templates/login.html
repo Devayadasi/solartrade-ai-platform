@@ -145,10 +145,12 @@
 
             </form>
 
+         {% if not session.get("admin_login") %}
+
             <div class="premium-register-link">
 
                 <p>
-                    Don’t have an account?
+                   Don’t have an account?
                 </p>
 
                 <a href="/register">
@@ -156,6 +158,8 @@
                 </a>
 
             </div>
+
+         {% endif %}
 
         </div>
 
