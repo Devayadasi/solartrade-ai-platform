@@ -108,21 +108,31 @@
                         Account Type
                     </label>
 
-                    <select name="role">
+{% if session.get("admin_login") %}
 
-                        <option value="consumer">
-                            Consumer
-                        </option>
+<select name="role">
 
-                        <option value="producer">
-                            Producer
-                        </option>
+    <option value="admin">
+        Admin
+    </option>
 
-                        <option value="admin">
-                            Admin
-                        </option>
+</select>
 
-                    </select>
+{% else %}
+
+<select name="role">
+
+    <option value="consumer">
+        Consumer
+    </option>
+
+    <option value="producer">
+        Producer
+    </option>
+
+</select>
+
+{% endif %}
 
                 </div>
 

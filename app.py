@@ -93,6 +93,17 @@ with app.app_context():
     db.create_all()
 
 # =========================================
+# SECRET ADMIN LOGIN
+# =========================================
+
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+
+    session["admin_login"] = True
+
+    return home()
+
+# =========================================
 # LOGIN PAGE
 # =========================================
 
@@ -102,47 +113,31 @@ def home():
     if request.method == "POST":
 
         email = request.form.get("email")
-
         password = request.form.get("password")
 
-        user = User.query.filter_by(
-            email=email
-        ).first()
+        user = User.query.filter_by(email=email).first()
 
-        if user and check_password_hash(
-            user.password,
-            password
-        ):
+        if user and check_password_hash(user.password, password):
 
+            # Set session for logged in user
             session["user_id"] = user.id
-
             session["role"] = user.role
-
             session["name"] = user.name
 
+            # Clear any temporary admin login flag
+            session.pop("admin_login", None)
+
+            # Redirect based on role
             if user.role == "producer":
-
-                return redirect(
-                    url_for("producer_dashboard")
-                )
-
+                return redirect(url_for("producer_dashboard"))
             elif user.role == "consumer":
-
-                return redirect(
-                    url_for("consumer_dashboard")
-                )
-
+                return redirect(url_for("consumer_dashboard"))
             elif user.role == "admin":
+                return redirect(url_for("admin_dashboard"))
 
-                return redirect(
-                    url_for("admin_dashboard")
-                )
-
+        # Invalid login
         flash("Invalid email or password")
-
-        return redirect(
-            url_for("home")
-        )
+        return redirect(url_for("home"))
 
     return render_template("login.html")
 
@@ -585,6 +580,9 @@ def admin_dashboard():
     if "user_id" not in session:
         return redirect(url_for("home"))
 
+    if session.get("role") != "admin":
+        return redirect(url_for("home"))
+
     total_users = User.query.count()
 
     total_consumers = User.query.filter_by(
@@ -637,6 +635,9 @@ def admin_dashboard():
 def admin_marketplace():
 
     if "user_id" not in session:
+        return redirect(url_for("home"))
+
+    if session.get("role") != "admin":
         return redirect(url_for("home"))
 
     listings = EnergyListing.query.filter_by(
@@ -703,6 +704,9 @@ def admin_transactions():
     if "user_id" not in session:
         return redirect(url_for("home"))
 
+    if session.get("role") != "admin":
+        return redirect(url_for("home"))
+
     transactions = Transaction.query.order_by(
         Transaction.id.desc()
     ).all()
@@ -744,6 +748,9 @@ def admin_transactions():
 def admin_analytics():
 
     if "user_id" not in session:
+        return redirect(url_for("home"))
+
+    if session.get("role") != "admin":
         return redirect(url_for("home"))
 
     total_users = User.query.count()
@@ -798,6 +805,9 @@ def admin_analytics():
 def admin_settings():
 
     if "user_id" not in session:
+        return redirect(url_for("home"))
+
+    if session.get("role") != "admin":
         return redirect(url_for("home"))
 
     user = User.query.get(
