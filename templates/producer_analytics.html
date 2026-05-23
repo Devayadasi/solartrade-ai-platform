@@ -1,0 +1,725 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- PREMIUM NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                📊
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Smart Renewable Energy Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/producer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/producer-marketplace">
+                Marketplace
+            </a>
+
+            <a href="/producer-transactions">
+                Transactions
+            </a>
+
+            <a
+                class="active-nav"
+                href="/producer-analytics"
+            >
+                Analytics
+            </a>
+
+            <a href="/producer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Analytics Center
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP ANALYTICS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- ENERGY PRODUCTION -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                ENERGY PRODUCTION
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            ☀️
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Renewable Production
+                            </h4>
+
+                            <span>
+                                Live energy generation
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:88%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Weekly Growth
+                        </span>
+
+                        <span>
+                            +18%
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ "%.2f"|format(total_energy) }}
+                    </h2>
+
+                    <p>
+                        kWh Generated
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- REVENUE ANALYTICS -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                REVENUE ANALYTICS
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        💰
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Revenue Generated
+                        </h4>
+
+                        <p>
+                            Smart marketplace earnings
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ "%.2f"|format(total_revenue) }}
+                        </strong>
+
+                        <span>
+                            +22% Revenue Growth
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="analyticsRevenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CARBON IMPACT -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                CARBON IMPACT
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            🌱
+                        </div>
+
+                        <span>
+                            CO₂ Reduction
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            {{ "%.2f"|format(total_energy * 0.85) }} kg
+                        </strong>
+
+                        <p>
+                            Sustainable Impact
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            📈
+                        </div>
+
+                        <span>
+                            Eco Efficiency
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="analyticsMiniChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            96%
+                        </strong>
+
+                        <p>
+                            Green Efficiency
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MAIN ANALYTICS -->
+    <!-- ========================================= -->
+
+    <div class="middle-grid">
+
+        <!-- MAIN GRAPH -->
+
+        <div class="large-section">
+
+            <div class="card-header-between">
+
+                <h3>
+                    ENERGY PRODUCTION TREND
+                </h3>
+
+                <div class="graph-top-tabs">
+
+                    <button
+                        class="graph-tab active-graph-tab"
+                        id="dailyAnalyticsBtn"
+                    >
+                        Daily
+                    </button>
+
+                    <button
+                        class="graph-tab"
+                        id="weeklyAnalyticsBtn"
+                    >
+                        Weekly
+                    </button>
+
+                    <button
+                        class="graph-tab"
+                        id="monthlyAnalyticsBtn"
+                    >
+                        Monthly
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="advanced-chart-box">
+
+                <canvas id="analyticsMainChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- MARKET INSIGHTS -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                LIVE MARKET INSIGHTS
+            </div>
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        +24%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        Renewable market growth
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Top Energy
+                        </p>
+
+                        <strong>
+                            Solar
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Peak Demand
+                        </p>
+
+                        <strong>
+                            Evening
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            📈
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Avg Market Price
+                            </h4>
+
+                            <p>
+                                Live trading analytics
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            ₹ 8.50
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Export Analytics Report
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- ANALYTICS GRID -->
+    <!-- ========================================= -->
+
+    <div class="bottom-grid">
+
+        <!-- SOURCE DISTRIBUTION -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                ENERGY SOURCE DISTRIBUTION
+            </div>
+
+            <div class="chart-container-small">
+
+                <canvas id="energySourceChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- MARKET PERFORMANCE -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                MARKET PERFORMANCE
+            </div>
+
+            <div class="chart-container-small">
+
+                <canvas id="marketPerformanceChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- SYSTEM PERFORMANCE -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                SYSTEM PERFORMANCE
+            </div>
+
+            <div class="performance-grid">
+
+                <div class="performance-box">
+
+                    <h2>
+                        98%
+                    </h2>
+
+                    <p>
+                        Efficiency
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        {{ listings|length }}
+                    </h2>
+
+                    <p>
+                        Live Listings
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        99.2%
+                    </h2>
+
+                    <p>
+                        Uptime
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- CONTRACT PERFORMANCE -->
+    <!-- ========================================= -->
+
+    <div class="large-section live-market-section">
+
+        <div class="card-header-between">
+
+            <h3>
+                CONTRACT PERFORMANCE
+            </h3>
+
+            <span class="market-badge">
+                LIVE CONTRACTS
+            </span>
+
+        </div>
+
+        {% if listings %}
+
+            <div class="premium-listings-grid">
+
+                {% for listing in listings[:6] %}
+
+                <div class="premium-listing-card">
+
+                    <div class="listing-top">
+
+                        <div class="listing-energy">
+
+                            <div class="listing-energy-icon">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ listing.energy_type }}
+                                </h3>
+
+                                <p>
+                                    Renewable Energy
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        {% if listing.status == "Available" %}
+
+                            <span class="active-status">
+                                Active
+                            </span>
+
+                        {% else %}
+
+                            <span class="warning-status">
+                                Sold
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="listing-middle">
+
+                        <div>
+
+                            <span>
+                                Energy
+                            </span>
+
+                            <strong>
+                                {{ "%.2f"|format(listing.energy_amount) }} kWh
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Status
+                            </span>
+
+                            <strong>
+                                {{ listing.status }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="listing-progress">
+
+                        <div
+                            class="listing-progress-fill"
+                            style="width:82%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-market-box">
+
+                <div class="empty-market-icon">
+                    📊
+                </div>
+
+                <h2>
+                    No Analytics Data Yet
+                </h2>
+
+                <p>
+                    Your active listings and contracts will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ========================================= -->
+
+    <div class="bottom-grid">
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="quick-actions-premium">
+
+            <div class="section-heading">
+                QUICK ACTIONS
+            </div>
+
+            <div class="action-buttons-grid">
+
+                <button
+                    onclick="window.location.href='/producer-transactions'"
+                >
+                    📈 Export Analytics
+                </button>
+
+                <button
+                    onclick="window.location.href='/producer'"
+                >
+                    ⚡ Production Report
+                </button>
+
+                <button
+                    onclick="window.location.href='/producer-marketplace'"
+                >
+                    💰 Revenue Insights
+                </button>
+
+                <button
+                    onclick="window.location.href='/producer-settings'"
+                >
+                    📊 Market Trends
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- MOTIVATION -->
+
+        <div class="motivation-card premium-motivation">
+
+            <h3>
+                🌱 PRODUCER IMPACT
+            </h3>
+
+            <p>
+                Your renewable production analytics show strong sustainable energy contribution and efficient energy distribution across the marketplace.
+            </p>
+
+            <span>
+                Analytics indicate strong renewable energy ecosystem performance.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

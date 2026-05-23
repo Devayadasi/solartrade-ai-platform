@@ -1,0 +1,655 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- PREMIUM NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                💰
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Smart Renewable Energy Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/producer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/producer-marketplace">
+                Marketplace
+            </a>
+
+            <a
+                class="active-nav"
+                href="/producer-transactions"
+            >
+                Transactions
+            </a>
+
+            <a href="/producer-analytics">
+                Analytics
+            </a>
+
+            <a href="/producer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Revenue Center
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- TOTAL SALES -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                TOTAL SALES
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            💰
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Energy Transactions
+                            </h4>
+
+                            <span>
+                                Completed renewable trades
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:88%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Monthly Growth
+                        </span>
+
+                        <span>
+                            +18%
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ transactions|length }}
+                    </h2>
+
+                    <p>
+                        Successful Sales
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL REVENUE -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TOTAL REVENUE
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        📈
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Revenue Generated
+                        </h4>
+
+                        <p>
+                            Renewable energy earnings
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ transactions | sum(attribute='total_price') }}
+                        </strong>
+
+                        <span>
+                            Secure settlements
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="transactionsRevenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PAYOUT STATUS -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                PAYOUT STATUS
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            ✅
+                        </div>
+
+                        <span>
+                            Completed Payments
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            92%
+                        </strong>
+
+                        <p>
+                            Successful Settlements
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            ⚡
+                        </div>
+
+                        <span>
+                            Processing Revenue
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="transactionMiniChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            +12%
+                        </strong>
+
+                        <p>
+                            Revenue Growth
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MIDDLE GRID -->
+    <!-- ========================================= -->
+
+    <div class="middle-grid">
+
+        <!-- TRANSACTION HISTORY -->
+
+        <div class="large-section">
+
+            <div class="card-header-between">
+
+                <h3>
+                    SALES HISTORY
+                </h3>
+
+                <button class="month-btn">
+                    Latest Transactions
+                </button>
+
+            </div>
+
+            {% if transactions %}
+
+                <div class="premium-transactions-list">
+
+                    {% for transaction in transactions %}
+
+                    <div class="premium-transaction-item">
+
+                        <div class="transaction-left">
+
+                            <div class="transaction-icon">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Transaction #{{ transaction.id }}
+                                </h4>
+
+                                <p>
+                                    {{ transaction.energy_amount }} kWh Sold
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="transaction-middle">
+
+                            <span>
+                                Revenue
+                            </span>
+
+                            <strong>
+                                ₹ {{ transaction.total_price }}
+                            </strong>
+
+                        </div>
+
+                        <div class="transaction-middle">
+
+                            <span>
+                                Date
+                            </span>
+
+                            <strong>
+                                {{ transaction.created_at.strftime('%d %b %Y') }}
+                            </strong>
+
+                        </div>
+
+                        <div class="transaction-right">
+
+                            <span class="active-status">
+                                Completed
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-market-box">
+
+                    <div class="empty-market-icon">
+                        💰
+                    </div>
+
+                    <h2>
+                        No Transactions Yet
+                    </h2>
+
+                    <p>
+                        Your completed energy sales will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- REVENUE INSIGHTS -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                REVENUE INSIGHTS
+            </div>
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        +24%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        Monthly revenue growth
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Best Revenue Day
+                        </p>
+
+                        <strong>
+                            Friday
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Top Buyer Region
+                        </p>
+
+                        <strong>
+                            Hyderabad
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            📈
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Peak Sales Hours
+                            </h4>
+
+                            <p>
+                                6 PM - 9 PM
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            ₹ 8.42
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Export Revenue Report
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- REVENUE ANALYTICS -->
+    <!-- ========================================= -->
+
+    <div class="large-section live-market-section">
+
+        <div class="card-header-between">
+
+            <h3>
+                REVENUE ANALYTICS
+            </h3>
+
+            <div class="graph-top-tabs">
+
+                <button
+                    class="graph-tab active-graph-tab"
+                    id="weeklyRevenueBtn"
+                >
+                    Weekly
+                </button>
+
+                <button
+                    class="graph-tab"
+                    id="monthlyRevenueBtn"
+                >
+                    Monthly
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="advanced-chart-box">
+
+            <canvas id="transactionsAnalyticsChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- BOTTOM GRID -->
+    <!-- ========================================= -->
+
+    <div class="bottom-grid">
+
+        <!-- PERFORMANCE -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                TRANSACTION PERFORMANCE
+            </div>
+
+            <div class="performance-grid">
+
+                <div class="performance-box">
+
+                    <h2>
+                        92%
+                    </h2>
+
+                    <p>
+                        Successful
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        6%
+                    </h2>
+
+                    <p>
+                        Pending
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        2%
+                    </h2>
+
+                    <p>
+                        Refunded
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="quick-actions-premium">
+
+            <div class="section-heading">
+                QUICK ACTIONS
+            </div>
+
+            <div class="action-buttons-grid">
+
+                <button
+                    onclick="window.location.href='/producer-marketplace'"
+                >
+                    💰 Withdraw Revenue
+                </button>
+
+                <button
+                    onclick="window.location.href='/producer-analytics'"
+                >
+                    📊 Export Sales
+                </button>
+
+                <button
+                    onclick="window.location.href='/producer'"
+                >
+                    ⚡ Active Orders
+                </button>
+
+                <button
+                    onclick="window.location.href='/producer-settings'"
+                >
+                    📑 Settlement Report
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- MOTIVATION -->
+
+        <div class="motivation-card premium-motivation">
+
+            <h3>
+                🌱 PRODUCER SUCCESS
+            </h3>
+
+            <p>
+                Your renewable energy sales are helping reduce carbon emissions and accelerating green energy adoption.
+            </p>
+
+            <span>
+                Every successful transaction supports a sustainable energy future.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

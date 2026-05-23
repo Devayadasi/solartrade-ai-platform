@@ -1,0 +1,955 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- PREMIUM NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                ⚙
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Smart Renewable Energy Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/producer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/producer-marketplace">
+                Marketplace
+            </a>
+
+            <a href="/producer-transactions">
+                Transactions
+            </a>
+
+            <a href="/producer-analytics">
+                Analytics
+            </a>
+
+            <a
+                class="active-nav"
+                href="/producer-settings"
+            >
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Producer Settings
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- SETTINGS GRID -->
+    <!-- ========================================= -->
+
+    <div class="settings-main-grid">
+
+        <!-- LEFT SIDE -->
+
+        <div class="settings-left-panel">
+
+            <!-- PROFILE CARD -->
+
+            <div class="premium-settings-card profile-settings-card">
+
+                <div class="profile-cover-gradient"></div>
+
+                <div class="settings-profile-avatar">
+
+                    {{ user.name[0] | upper }}
+
+                </div>
+
+                <h2>
+                    {{ user.name }}
+                </h2>
+
+                <p class="settings-email">
+                    {{ user.email }}
+                </p>
+
+                <div class="verified-consumer-box">
+
+                    <h4>
+                        ⚡ Verified Energy Producer
+                    </h4>
+
+                    <p>
+                        Smart renewable energy producer
+                    </p>
+
+                </div>
+
+                <div class="settings-stats-grid">
+
+                    <div class="settings-stat-box">
+
+                        <h3>
+                            98%
+                        </h3>
+
+                        <p>
+                            Efficiency
+                        </p>
+
+                    </div>
+
+                    <div class="settings-stat-box">
+
+                        <h3>
+                            24
+                        </h3>
+
+                        <p>
+                            Sales
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="settings-info-list">
+
+                    <div class="settings-info-row">
+
+                        <span>
+                            Account Type
+                        </span>
+
+                        <strong>
+                            Producer
+                        </strong>
+
+                    </div>
+
+                    <div class="settings-info-row">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong class="green-active-status">
+                            Active
+                        </strong>
+
+                    </div>
+
+                    <div class="settings-info-row">
+
+                        <span>
+                            Joined
+                        </span>
+
+                        <strong>
+                            2026
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="premium-settings-card">
+
+                <div class="settings-card-header">
+
+                    <h3>
+                        QUICK ACTIONS
+                    </h3>
+
+                </div>
+
+                <div class="settings-action-buttons">
+
+                    <button
+                        onclick="window.location.href='/producer-dashboard'"
+                    >
+                        📊 Dashboard
+                    </button>
+
+                    <button
+                        onclick="window.location.href='/producer-marketplace'"
+                    >
+                        ⚡ Marketplace
+                    </button>
+
+                    <button
+                        onclick="window.location.href='/producer-analytics'"
+                    >
+                        📈 Analytics
+                    </button>
+
+                    <button
+                        onclick="window.location.href='/logout'"
+                    >
+                        🚪 Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="settings-right-panel">
+
+            <!-- PROFILE FORM -->
+
+            <div class="premium-settings-card">
+
+                <div class="settings-header-row">
+
+                    <div>
+
+                        <h3>
+                            EDIT PROFILE INFORMATION
+                        </h3>
+
+                        <p>
+                            Manage your renewable energy producer account
+                        </p>
+
+                    </div>
+
+                    <div class="secure-settings-box">
+
+                        🔒 Secure Settings
+
+                    </div>
+
+                </div>
+
+                <form
+                    action="/update-producer-profile"
+                    method="POST"
+                    class="premium-settings-form"
+                >
+
+                    <div class="premium-form-grid">
+
+                        <!-- NAME -->
+
+                        <div class="premium-input-group">
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                value="{{ user.name }}"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- EMAIL -->
+
+                        <div class="premium-input-group">
+
+                            <label>
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                value="{{ user.email }}"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- PASSWORD -->
+
+                        <div class="premium-input-group">
+
+                            <label>
+                                New Password
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Leave blank to keep password"
+                            >
+
+                        </div>
+
+                        <!-- ENERGY -->
+
+                        <div class="premium-input-group">
+
+                            <label>
+                                Produced Energy
+                            </label>
+
+                            <select>
+
+                                <option>
+                                    Solar Energy
+                                </option>
+
+                                <option>
+                                    Wind Energy
+                                </option>
+
+                                <option>
+                                    Hydro Energy
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- PHONE -->
+
+                        <div class="premium-input-group">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                placeholder="+91 XXXXX XXXXX"
+                            >
+
+                        </div>
+
+                        <!-- CITY -->
+
+                        <div class="premium-input-group">
+
+                            <label>
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                value="{{ session.city }}"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- BIO -->
+
+                    <div class="premium-input-group full-width-input">
+
+                        <label>
+                            Producer Bio
+                        </label>
+
+                        <textarea
+                            rows="5"
+                            placeholder="Tell us about your renewable energy production..."
+                        ></textarea>
+
+                    </div>
+
+                    <!-- TOGGLES -->
+
+                    <div class="settings-toggle-grid">
+
+                        <div class="settings-toggle-card">
+
+                            <div>
+
+                                <h4>
+                                    Marketplace Alerts
+                                </h4>
+
+                                <p>
+                                    Receive energy notifications
+                                </p>
+
+                            </div>
+
+                            <label class="premium-switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="premium-slider"></span>
+
+                            </label>
+
+                        </div>
+
+                        <div class="settings-toggle-card">
+
+                            <div>
+
+                                <h4>
+                                    Email Reports
+                                </h4>
+
+                                <p>
+                                    Weekly renewable reports
+                                </p>
+
+                            </div>
+
+                            <label class="premium-switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="premium-slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTONS -->
+
+                    <div class="settings-button-group">
+
+                        <button
+                            type="submit"
+                            class="premium-save-btn"
+                        >
+                            💾 Save Changes
+                        </button>
+
+                        <button
+                            type="reset"
+                            class="premium-reset-btn"
+                        >
+                            ↻ Reset
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <!-- SECURITY -->
+
+            <div class="premium-settings-card">
+
+                <div class="settings-card-header">
+
+                    <h3>
+                        ACCOUNT SECURITY
+                    </h3>
+
+                </div>
+
+                <div class="security-settings-grid">
+
+                    <div class="security-settings-box">
+
+                        <h2>
+                            256-bit
+                        </h2>
+
+                        <p>
+                            Encryption
+                        </p>
+
+                    </div>
+
+                    <div class="security-settings-box">
+
+                        <h2>
+                            100%
+                        </h2>
+
+                        <p>
+                            Protected
+                        </p>
+
+                    </div>
+
+                    <div class="security-settings-box">
+
+                        <h2>
+                            24/7
+                        </h2>
+
+                        <p>
+                            Monitoring
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- PREMIUM STYLES -->
+<!-- ========================================= -->
+
+<style>
+
+.settings-main-grid{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:28px;
+    margin-top:28px;
+}
+
+.settings-left-panel,
+.settings-right-panel{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.premium-settings-card{
+    background:white;
+    border-radius:30px;
+    padding:30px;
+    box-shadow:
+        0 12px 30px rgba(15,23,42,0.05);
+}
+
+.profile-settings-card{
+    position:relative;
+    overflow:hidden;
+}
+
+.profile-cover-gradient{
+    width:100%;
+    height:120px;
+    border-radius:24px;
+    background:linear-gradient(
+        135deg,
+        #27a9ee,
+        #22c55e
+    );
+}
+
+.settings-profile-avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:white;
+    margin:-60px auto 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    font-weight:800;
+    color:#0f172a;
+    border:6px solid white;
+    box-shadow:
+        0 15px 30px rgba(15,23,42,0.12);
+}
+
+.profile-settings-card h2{
+    text-align:center;
+    font-size:28px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.settings-email{
+    text-align:center;
+    color:#94a3b8;
+    margin-top:8px;
+}
+
+.verified-consumer-box{
+    margin-top:24px;
+    background:#f0fdf4;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+}
+
+.verified-consumer-box h4{
+    color:#16a34a;
+    font-size:18px;
+    font-weight:700;
+}
+
+.verified-consumer-box p{
+    color:#65a30d;
+    margin-top:6px;
+    font-size:14px;
+}
+
+.settings-stats-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:24px;
+}
+
+.settings-stat-box{
+    background:#f8fbff;
+    border-radius:20px;
+    padding:22px;
+    text-align:center;
+}
+
+.settings-stat-box h3{
+    font-size:28px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.settings-stat-box p{
+    color:#94a3b8;
+    margin-top:6px;
+}
+
+.settings-info-list{
+    margin-top:26px;
+}
+
+.settings-info-row{
+    display:flex;
+    justify-content:space-between;
+    padding:18px 0;
+    border-bottom:1px solid #eef2f7;
+}
+
+.settings-info-row span{
+    color:#94a3b8;
+}
+
+.settings-info-row strong{
+    color:#0f172a;
+}
+
+.green-active-status{
+    color:#16a34a;
+}
+
+.settings-card-header h3{
+    font-size:24px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.settings-action-buttons{
+    margin-top:24px;
+    display:grid;
+    gap:16px;
+}
+
+.settings-action-buttons button{
+    height:56px;
+    border:none;
+    border-radius:18px;
+    background:#f8fbff;
+    font-size:15px;
+    font-weight:700;
+    color:#0f172a;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.settings-action-buttons button:hover{
+    background:#27a9ee;
+    color:white;
+    transform:translateY(-3px);
+}
+
+.settings-header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.settings-header-row h3{
+    font-size:30px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.settings-header-row p{
+    color:#94a3b8;
+    margin-top:6px;
+}
+
+.secure-settings-box{
+    padding:14px 20px;
+    border-radius:16px;
+    background:#f0fdf4;
+    color:#16a34a;
+    font-weight:700;
+}
+
+.premium-form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+}
+
+.premium-input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.premium-input-group label{
+    margin-bottom:10px;
+    font-size:14px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.premium-input-group input,
+.premium-input-group select,
+.premium-input-group textarea{
+    border:none;
+    background:#f8fbff;
+    border-radius:18px;
+    padding:18px;
+    font-size:15px;
+    outline:none;
+}
+
+.full-width-input{
+    margin-top:24px;
+}
+
+.settings-toggle-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:28px;
+}
+
+.settings-toggle-card{
+    background:#f8fbff;
+    border-radius:22px;
+    padding:22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.settings-toggle-card h4{
+    font-size:16px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.settings-toggle-card p{
+    color:#94a3b8;
+    font-size:13px;
+    margin-top:6px;
+}
+
+.premium-switch{
+    position:relative;
+    width:60px;
+    height:32px;
+}
+
+.premium-switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.premium-slider{
+    position:absolute;
+    inset:0;
+    background:#cbd5e1;
+    border-radius:40px;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.premium-slider::before{
+    content:'';
+    position:absolute;
+    width:24px;
+    height:24px;
+    left:4px;
+    bottom:4px;
+    background:white;
+    border-radius:50%;
+    transition:0.4s;
+}
+
+.premium-switch input:checked + .premium-slider{
+    background:#22c55e;
+}
+
+.premium-switch input:checked + .premium-slider::before{
+    transform:translateX(28px);
+}
+
+.settings-button-group{
+    margin-top:30px;
+    display:flex;
+    gap:18px;
+}
+
+.premium-save-btn{
+    flex:1;
+    height:58px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(
+        135deg,
+        #27a9ee,
+        #0ea5e9
+    );
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.premium-reset-btn{
+    width:180px;
+    border:none;
+    border-radius:18px;
+    background:#f8fbff;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.premium-save-btn:hover,
+.premium-reset-btn:hover{
+    transform:translateY(-3px);
+}
+
+.security-settings-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-top:24px;
+}
+
+.security-settings-box{
+    background:#f8fbff;
+    border-radius:22px;
+    padding:26px;
+    text-align:center;
+}
+
+.security-settings-box h2{
+    font-size:32px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.security-settings-box p{
+    margin-top:8px;
+    color:#94a3b8;
+}
+
+@media(max-width:992px){
+
+    .settings-main-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .premium-form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .settings-toggle-grid{
+        grid-template-columns:1fr;
+    }
+
+    .security-settings-grid{
+        grid-template-columns:1fr;
+    }
+
+    .settings-button-group{
+        flex-direction:column;
+    }
+
+    .premium-reset-btn{
+        width:100%;
+        height:58px;
+    }
+
+    .settings-header-row{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,798 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                ⚡
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Smart Renewable Energy Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a class="active-nav" href="/producer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/producer-marketplace">
+                Marketplace
+            </a>
+
+            <a href="/producer-transactions">
+                Transactions
+            </a>
+
+            <a href="/producer-analytics">
+                Analytics
+            </a>
+
+            <a href="/producer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Verified Producer
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- ENERGY BALANCE -->
+
+        <div class="stat-card compact-card">
+            
+            <div class="card-title">
+               ENERGY BALANCE
+            </div>
+
+
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Balance
+                            </h4>
+
+                            <span>
+                                Yesterday
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div class="compact-progress-fill"></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Yesterday
+                        </span>
+
+                        <span>
+                            Today
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ "%.0f"|format(total_energy * 7123) }} kWatts
+                    </h2>
+
+                    <p>
+                        +7%
+                        ({{ "%.0f"|format(total_energy * 328) }} kWatts today)
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CONTRACTS -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                ENERGY CONTRACTS & PROFIT MARGIN
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon">
+                            📄
+                        </div>
+
+                        <span>
+                            Contracts
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            4 Active
+                        </strong>
+
+                        <p>
+                            172 Expired
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            📈
+                        </div>
+
+                        <span>
+                            Profit Margin
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="profitChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            +7%
+                        </strong>
+
+                        <p>
+                            -1% Today
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- EARNINGS -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                EARNINGS
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        💰
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Earnings
+                        </h4>
+
+                        <p>
+                            Renewable income analytics
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ "%.0f"|format(total_revenue * 223) }}
+                        </strong>
+
+                        <span>
+                            {{ "%.0f"|format(total_energy * 987) }} kWatts
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="earningsChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MIDDLE GRID -->
+    <!-- ========================================= -->
+
+    <div class="middle-grid">
+
+        <!-- LEFT SECTION -->
+
+        <div class="large-section">
+
+            <div class="section-heading">
+                SYENERGY LIVE STATS
+            </div>
+
+            <div class="advanced-stats-layout">
+
+                <!-- LEFT STATS -->
+
+                <div class="advanced-stats-list">
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon yellow-bg">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Energy Production
+                                </h4>
+
+                                <p>
+                                    +5% (+121 kWatts today)
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                {{ "%.0f"|format(total_energy * 146) }} kWatts
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon blue-bg">
+                                💧
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Energy Consumption
+                                </h4>
+
+                                <p>
+                                    +6% (-77 kWatts today)
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                {{ "%.0f"|format(total_energy * 93) }} kWatts
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon green-bg">
+                                💰
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Total Sales
+                                </h4>
+
+                                <p>
+                                    +₹675 Today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                ₹ {{ "%.0f"|format(total_revenue * 223) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon purple-bg">
+                                📈
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Average ROI
+                                </h4>
+
+                                <p>
+                                    +3% This Week
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                24%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- GRAPH -->
+
+                <div class="advanced-graph-section">
+
+                    <div class="graph-top-tabs">
+
+                        <button
+                            class="graph-tab active-graph-tab"
+                            id="buyBtn"
+                        >
+                            Buy energy
+                        </button>
+
+                        <button
+                            class="graph-tab"
+                            id="sellBtn"
+                        >
+                            Sell energy
+                        </button>
+
+                    </div>
+
+                    <div class="advanced-chart-box">
+
+                        <canvas id="advancedEnergyChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BEST OFFER -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                BEST OFFER OF THE DAY
+            </div>
+
+            {% if listings and listings|length > 0 %}
+
+                {% for listing in listings[:2] %}
+
+                <div class="premium-offer-card">
+
+                    <div class="offer-green-box">
+
+                        <div class="offer-growth">
+                            +7.3%
+                        </div>
+
+                        <div class="offer-growth-text">
+                            More than current market price
+                        </div>
+
+                    </div>
+
+                    <div class="offer-details-grid">
+
+                        <div>
+
+                            <p>
+                                Delivery time
+                            </p>
+
+                            <strong>
+                                7 Days
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Billing type
+                            </p>
+
+                            <strong>
+                                Monthly
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-box">
+
+                        <div class="energy-offer-left">
+
+                            <div class="energy-icon-small">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    {{ listing.energy_type }}
+                                </h4>
+
+                                <p>
+                                    {{ "%.2f"|format(listing.energy_amount) }} kWh
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="energy-offer-right">
+
+                            <strong>
+                                ₹ {{ "%.2f"|format(listing.price) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <button class="premium-sell-btn">
+                        Sell Energy
+                    </button>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        +7.3%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        More than current market price
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Delivery time
+                        </p>
+
+                        <strong>
+                            7 Days
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Billing type
+                        </p>
+
+                        <strong>
+                            Monthly
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Solar Energy
+                            </h4>
+
+                            <p>
+                                612 kWh
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            ₹ 347
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Sell Energy
+                </button>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MAP SECTION -->
+    <!-- ========================================= -->
+
+    <div class="map-main-grid">
+
+        <div class="map-section">
+
+            <div class="map-header">
+
+                <h3>
+                    LIVE MARKET MAP
+                </h3>
+
+                <span>
+                    India Renewable Network
+                </span>
+
+            </div>
+
+            <div id="energyMap"></div>
+
+        </div>
+
+        <!-- RIGHT WIDGET -->
+
+        <div class="offer-widget">
+
+            <div class="widget-badge">
+                NEW
+            </div>
+
+            <h4>
+                TOP ENERGY DEAL
+            </h4>
+
+            <div class="widget-top-grid">
+
+                <div>
+
+                    <span>
+                        ⚡
+                    </span>
+
+                    <p>
+                        Energy
+                    </p>
+
+                    <strong>
+                        Solar
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        📅
+                    </span>
+
+                    <p>
+                        Delivery
+                    </p>
+
+                    <strong>
+                        7 Days
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        💳
+                    </span>
+
+                    <p>
+                        Billing
+                    </p>
+
+                    <strong>
+                        Monthly
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        📈
+                    </span>
+
+                    <p>
+                        Growth
+                    </p>
+
+                    <strong>
+                        +7.3%
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="widget-energy-box">
+
+                <div class="green-percent">
+                    +7.3%
+                </div>
+
+                <div class="energy-right">
+
+                    <h3>
+                        Solar Energy
+                    </h3>
+
+                    <p>
+                        612 kWatts
+                    </p>
+
+                    <strong>
+                        ₹ 347
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <button class="widget-btn">
+                Sell Energy
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

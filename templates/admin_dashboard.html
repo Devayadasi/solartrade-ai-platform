@@ -1,0 +1,1012 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ===================================== -->
+    <!-- NAVBAR -->
+    <!-- ===================================== -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                🛡
+            </div>
+
+            <div>
+
+                <h2>
+                    Admin Control Center
+                </h2>
+
+                <p>
+                    Renewable Energy Trading Platform
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a
+                class="active-nav"
+                href="/admin-dashboard"
+            >
+                Dashboard
+            </a>
+
+            <a href="/admin-marketplace">
+                Marketplace
+            </a>
+
+            <a href="/admin-transactions">
+                Transactions
+            </a>
+
+            <a href="/admin-analytics">
+                Analytics
+            </a>
+
+            <a href="/admin-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    A
+                </div>
+
+                <div>
+
+                    <h4>
+                        Admin
+                    </h4>
+
+                    <p>
+                        Platform Monitoring
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TOP STATS -->
+    <!-- ===================================== -->
+
+    <div class="top-cards">
+
+        <!-- USERS -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                TOTAL USERS
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            👥
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Registered Users
+                            </h4>
+
+                            <span>
+                                Consumers & Producers
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:88%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Growth
+                        </span>
+
+                        <span>
+                            +18%
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ total_users }}
+                    </h2>
+
+                    <p>
+                        Active Users
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ENERGY -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TOTAL ENERGY TRADED
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        ⚡
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Renewable Marketplace
+                        </h4>
+
+                        <p>
+                            Live energy monitoring
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            {{ total_energy }} kWh
+                        </strong>
+
+                        <span>
+                            +26% Growth
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="energyChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- REVENUE -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                PLATFORM REVENUE
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            💰
+                        </div>
+
+                        <span>
+                            Total Revenue
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            ₹ {{ total_revenue }}
+                        </strong>
+
+                        <p>
+                            Marketplace income
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            📈
+                        </div>
+
+                        <span>
+                            Transactions
+                        </span>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            {{ total_transactions }}
+                        </strong>
+
+                        <p>
+                            Completed trades
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- ANALYTICS -->
+    <!-- ===================================== -->
+
+    <div class="middle-grid">
+
+        <div class="large-section analytics-main-card">
+
+            <div class="card-header-between">
+
+                <div>
+
+                    <h3>
+                        PLATFORM ANALYTICS
+                    </h3>
+
+                    <p class="section-subtitle">
+                        Real-time renewable marketplace insights
+                    </p>
+
+                </div>
+
+                <div class="graph-top-tabs">
+
+                    <button
+                        class="graph-tab active-graph-tab"
+                        onclick="switchChart('daily', this)"
+                    >
+                        Daily
+                    </button>
+
+                    <button
+                        class="graph-tab"
+                        onclick="switchChart('weekly', this)"
+                    >
+                        Weekly
+                    </button>
+
+                    <button
+                        class="graph-tab"
+                        onclick="switchChart('monthly', this)"
+                    >
+                        Monthly
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="advanced-chart-box">
+
+                <canvas id="mainChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                SYSTEM STATUS
+            </div>
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        99.8%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        System uptime
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Producers
+                        </p>
+
+                        <strong>
+                            {{ total_producers }}
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Consumers
+                        </p>
+
+                        <strong>
+                            {{ total_consumers }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            🌱
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Carbon Reduction
+                            </h4>
+
+                            <p>
+                                Sustainable ecosystem
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            18.4T
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Generate Platform Report
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- LIVE MARKET ACTIVITY -->
+    <!-- ===================================== -->
+
+    <div class="large-section premium-performance-wrapper">
+
+        <div class="card-header-between performance-main-header">
+
+            <div>
+
+                <h3>
+                    LIVE MARKET ACTIVITY
+                </h3>
+
+                <p>
+                    Real-time renewable energy trades
+                </p>
+
+            </div>
+
+            <button class="performance-analytics-btn">
+                ⚡ Live Monitoring
+            </button>
+
+        </div>
+
+        {% if recent_transactions %}
+
+        <div class="premium-performance-grid">
+
+            {% for transaction in recent_transactions %}
+
+            <div class="premium-performance-card">
+
+                <!-- TOP -->
+
+                <div class="performance-top-row">
+
+                    <div class="performance-user">
+
+                        <div class="performance-energy-icon">
+                            ⚡
+                        </div>
+
+                        <div class="transaction-info">
+
+                            <h4>
+                                Transaction #{{ transaction.id }}
+                            </h4>
+
+                            <p>
+                                Renewable Energy Trade
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- STATUS -->
+
+                <div class="transaction-status-row">
+
+                    <span class="performance-status">
+
+                        <span class="status-dot"></span>
+
+                        Completed
+
+                    </span>
+
+                </div>
+
+                <!-- STATS -->
+
+                <div class="performance-stats-grid">
+
+                    <div class="performance-stat-box">
+
+                        <span>
+                            Energy
+                        </span>
+
+                        <strong>
+                            {{ transaction.energy_amount }}
+                            kWh
+                        </strong>
+
+                    </div>
+
+                    <div class="performance-stat-box">
+
+                        <span>
+                            Revenue
+                        </span>
+
+                        <strong>
+                            ₹ {{ transaction.total_price }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <!-- PROGRESS -->
+
+                <div class="performance-progress">
+
+                    <div class="performance-progress-fill"></div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-market-box">
+
+            <div class="empty-market-icon">
+                📊
+            </div>
+
+            <h2>
+                No Transactions Available
+            </h2>
+
+            <p>
+                Live marketplace activity will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- ===================================== -->
+<!-- STYLES -->
+<!-- ===================================== -->
+
+<style>
+
+.advanced-chart-box{
+    height:420px;
+}
+
+.earnings-chart-wrap{
+    height:220px;
+}
+
+canvas{
+    width:100% !important;
+    height:100% !important;
+}
+
+.section-subtitle{
+    color:#94a3b8;
+    margin-top:6px;
+}
+
+.premium-performance-wrapper{
+    margin-top:28px;
+    background:white;
+    border-radius:32px;
+    padding:36px;
+    box-shadow:
+        0 10px 35px rgba(15,23,42,0.05);
+}
+
+.performance-main-header{
+    margin-bottom:34px;
+}
+
+.performance-main-header h3{
+    font-size:34px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.performance-main-header p{
+    margin-top:8px;
+    color:#94a3b8;
+    font-size:17px;
+}
+
+.performance-analytics-btn{
+    height:58px;
+    border:none;
+    padding:0 28px;
+    border-radius:18px;
+    background:linear-gradient(
+        135deg,
+        #27a9ee,
+        #0ea5e9
+    );
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.performance-analytics-btn:hover{
+    transform:translateY(-4px);
+}
+
+.premium-performance-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(360px,1fr));
+    gap:26px;
+}
+
+.premium-performance-card{
+    background:white;
+    border-radius:28px;
+    padding:30px;
+    border:1px solid #edf2f7;
+    box-shadow:
+        0 10px 30px rgba(15,23,42,0.05);
+    transition:0.3s;
+}
+
+.premium-performance-card:hover{
+    transform:translateY(-5px);
+}
+
+.performance-top-row{
+    display:flex;
+    align-items:center;
+}
+
+.performance-user{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.performance-energy-icon{
+    width:76px;
+    height:76px;
+    border-radius:24px;
+    background:linear-gradient(
+        135deg,
+        #dbeafe,
+        #bfdbfe
+    );
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+}
+
+.transaction-info h4{
+    font-size:22px;
+    font-weight:800;
+    color:#0f172a;
+    line-height:1.3;
+}
+
+.transaction-info p{
+    margin-top:6px;
+    color:#94a3b8;
+    font-size:15px;
+    line-height:1.5;
+}
+
+/* FIXED STATUS */
+
+.transaction-status-row{
+    margin-top:22px;
+    display:flex;
+    justify-content:flex-start;
+}
+
+.performance-status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    background:#dcfce7;
+    color:#16a34a;
+    border-radius:40px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+.performance-stats-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:26px;
+}
+
+.performance-stat-box{
+    background:#f8fbff;
+    border-radius:22px;
+    padding:24px;
+}
+
+.performance-stat-box span{
+    display:block;
+    color:#94a3b8;
+    margin-bottom:12px;
+    font-size:14px;
+}
+
+.performance-stat-box strong{
+    font-size:22px;
+    color:#0f172a;
+    line-height:1.4;
+    font-weight:800;
+}
+
+.performance-progress{
+    width:100%;
+    height:12px;
+    background:#e2e8f0;
+    border-radius:40px;
+    overflow:hidden;
+    margin-top:28px;
+}
+
+.performance-progress-fill{
+    width:92%;
+    height:100%;
+    border-radius:40px;
+    background:linear-gradient(
+        135deg,
+        #27a9ee,
+        #0ea5e9
+    );
+}
+
+.empty-market-box{
+    text-align:center;
+    padding:90px 20px;
+}
+
+.empty-market-icon{
+    width:110px;
+    height:110px;
+    margin:auto;
+    border-radius:30px;
+    background:#f8fbff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:48px;
+    margin-bottom:24px;
+}
+
+.empty-market-box h2{
+    font-size:34px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.empty-market-box p{
+    margin-top:12px;
+    color:#94a3b8;
+    font-size:16px;
+}
+
+@media(max-width:768px){
+
+    .premium-performance-grid{
+        grid-template-columns:1fr;
+    }
+
+    .performance-stats-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+<!-- ===================================== -->
+<!-- CHARTS -->
+<!-- ===================================== -->
+
+<script>
+
+let mainChart;
+
+const dailyData = [120,180,150,240,210,320,280];
+const weeklyData = [900,1200,1500,1800,2200,2600];
+const monthlyData = [4200,6100,7300,8800,10400,12800];
+
+const labelsMap = {
+
+    daily:[
+        'Mon','Tue','Wed',
+        'Thu','Fri','Sat','Sun'
+    ],
+
+    weekly:[
+        'W1','W2','W3',
+        'W4','W5','W6'
+    ],
+
+    monthly:[
+        'Jan','Feb','Mar',
+        'Apr','May','Jun'
+    ]
+
+};
+
+const dataMap = {
+
+    daily:dailyData,
+
+    weekly:weeklyData,
+
+    monthly:monthlyData
+
+};
+
+function createChart(type){
+
+    const ctx =
+    document.getElementById(
+        'mainChart'
+    );
+
+    if(mainChart){
+        mainChart.destroy();
+    }
+
+    mainChart =
+    new Chart(ctx, {
+
+        type:'line',
+
+        data:{
+
+            labels:labelsMap[type],
+
+            datasets:[{
+
+                label:'Platform Activity',
+
+                data:dataMap[type],
+
+                borderColor:'#27a9ee',
+
+                backgroundColor:
+                'rgba(39,169,238,0.12)',
+
+                fill:true,
+
+                tension:0.4,
+
+                borderWidth:4,
+
+                pointRadius:5
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            plugins:{
+                legend:{
+                    display:false
+                }
+            }
+
+        }
+
+    });
+
+}
+
+createChart('daily');
+
+function switchChart(type, element){
+
+    document
+    .querySelectorAll('.graph-tab')
+    .forEach(btn => {
+
+        btn.classList.remove(
+            'active-graph-tab'
+        );
+
+    });
+
+    element.classList.add(
+        'active-graph-tab'
+    );
+
+    createChart(type);
+
+}
+
+new Chart(
+
+    document.getElementById(
+        'energyChart'
+    ),
+
+    {
+
+        type:'bar',
+
+        data:{
+
+            labels:[
+                'Jan','Feb','Mar',
+                'Apr','May','Jun'
+            ],
+
+            datasets:[{
+
+                data:[
+                    4200,
+                    6100,
+                    5800,
+                    7200,
+                    8600,
+                    10200
+                ],
+
+                borderRadius:12,
+
+                backgroundColor:'#27a9ee'
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            plugins:{
+                legend:{
+                    display:false
+                }
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

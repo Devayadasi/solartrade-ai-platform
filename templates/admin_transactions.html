@@ -1,0 +1,1059 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                💰
+            </div>
+
+            <div>
+
+                <h2>
+                    Admin Transactions
+                </h2>
+
+                <p>
+                    Renewable Energy Transaction Monitoring
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/admin-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/admin-marketplace">
+                Marketplace
+            </a>
+
+            <a
+                class="active-nav"
+                href="/admin-transactions"
+            >
+                Transactions
+            </a>
+
+            <a href="/admin-analytics">
+                Analytics
+            </a>
+
+            <a href="/admin-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Transaction Admin
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- TOTAL TRANSACTIONS -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                TOTAL TRANSACTIONS
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            💸
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Live Transactions
+                            </h4>
+
+                            <span>
+                                Marketplace transaction monitoring
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:94%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Transaction Activity
+                        </span>
+
+                        <span>
+                            Active
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ transactions|length }}
+                    </h2>
+
+                    <p>
+                        Transactions
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL REVENUE -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TOTAL REVENUE
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        📈
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Revenue Overview
+                        </h4>
+
+                        <p>
+                            Renewable transaction revenue
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ total_revenue }}
+                        </strong>
+
+                        <span>
+                            +12.6% Growth
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="revenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SECURITY -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TRANSACTION SECURITY
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            🛡
+                        </div>
+
+                        <span>
+                            Protected Payments
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            100%
+                        </strong>
+
+                        <p>
+                            Secure Transactions
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            ⚡
+                        </div>
+
+                        <span>
+                            Live Monitoring
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="securityChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            24/7
+                        </strong>
+
+                        <p>
+                            Monitoring
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TRANSACTION GRAPH -->
+    <!-- ========================================= -->
+
+    <div class="large-section transaction-graph-section">
+
+        <div class="market-graph-header">
+
+            <div>
+
+                <h2>
+                    TRANSACTION ANALYTICS
+                </h2>
+
+                <p>
+                    Real-time renewable transaction activity
+                </p>
+
+            </div>
+
+            <div class="graph-controls">
+
+                <button
+                    class="graph-btn active-graph-btn"
+                    id="dailyBtn"
+                >
+                    Daily
+                </button>
+
+                <button
+                    class="graph-btn"
+                    id="weeklyBtn"
+                >
+                    Weekly
+                </button>
+
+                <button
+                    class="graph-btn"
+                    id="monthlyBtn"
+                >
+                    Monthly
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="market-chart-container">
+
+            <canvas id="transactionChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TRANSACTION TABLE -->
+    <!-- ========================================= -->
+
+    <div class="transaction-table-wrapper">
+
+        <div class="table-header">
+
+            <h2>
+                Recent Transactions
+            </h2>
+
+            <span>
+                Admin Monitoring Panel
+            </span>
+
+        </div>
+
+        {% if transactions %}
+
+        <div class="table-responsive">
+
+            <table class="premium-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Transaction ID
+                        </th>
+
+                        <th>
+                            Buyer
+                        </th>
+
+                        <th>
+                            Producer
+                        </th>
+
+                        <th>
+                            Energy
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for transaction in transactions %}
+
+                    <tr>
+
+                        <td>
+                            #{{ transaction.id }}
+                        </td>
+
+                        <td>
+
+                            {% if transaction.consumer_name %}
+
+                                {{ transaction.consumer_name }}
+
+                            {% elif transaction.consumer_id %}
+
+                                Consumer #{{ transaction.consumer_id }}
+
+                            {% else %}
+
+                                Unknown Consumer
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if transaction.producer_name %}
+
+                                {{ transaction.producer_name }}
+
+                            {% elif transaction.producer_id %}
+
+                                Producer #{{ transaction.producer_id }}
+
+                            {% else %}
+
+                                Unknown Producer
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ transaction.energy_amount }} kWh
+                        </td>
+
+                        <td>
+                            ₹ {{ transaction.total_price }}
+                        </td>
+
+                        <td>
+
+                            <span class="success-status">
+                                Completed
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-market-box">
+
+            <div class="empty-market-icon">
+                💰
+            </div>
+
+            <h2>
+                No Transactions Available
+            </h2>
+
+            <p>
+                No renewable energy transactions completed yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<style>
+
+.transaction-graph-section{
+    margin-top:34px;
+    padding:34px;
+    background:white;
+    border-radius:32px;
+    box-shadow:
+        0 10px 30px rgba(15,23,42,0.05);
+}
+
+.market-graph-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.market-graph-header h2{
+    font-size:34px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.market-graph-header p{
+    margin-top:8px;
+    color:#94a3b8;
+    font-size:15px;
+}
+
+.graph-controls{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.graph-btn{
+    height:52px;
+    padding:0 26px;
+    border:none;
+    border-radius:18px;
+    background:#eef6ff;
+    color:#0ea5e9;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.graph-btn:hover{
+    transform:translateY(-3px);
+}
+
+.active-graph-btn{
+    background:
+    linear-gradient(
+        135deg,
+        #27a9ee,
+        #0ea5e9
+    );
+    color:white;
+}
+
+.market-chart-container{
+    height:420px;
+    width:100%;
+}
+
+.transaction-table-wrapper{
+    margin-top:34px;
+    background:white;
+    border-radius:32px;
+    padding:34px;
+    box-shadow:
+        0 10px 30px rgba(15,23,42,0.05);
+}
+
+.table-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.table-header h2{
+    font-size:32px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.table-header span{
+    background:
+    linear-gradient(
+        135deg,
+        #27a9ee,
+        #0ea5e9
+    );
+    color:white;
+    padding:12px 18px;
+    border-radius:40px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.premium-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.premium-table thead{
+    background:#f8fbff;
+}
+
+.premium-table th{
+    padding:22px;
+    text-align:left;
+    color:#64748b;
+    font-size:15px;
+}
+
+.premium-table td{
+    padding:22px;
+    border-bottom:1px solid #f1f5f9;
+    color:#0f172a;
+    font-weight:600;
+}
+
+.success-status{
+    background:#dcfce7;
+    color:#16a34a;
+    padding:10px 16px;
+    border-radius:40px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.empty-market-box{
+    background:white;
+    border-radius:32px;
+    padding:80px 30px;
+    text-align:center;
+}
+
+.empty-market-icon{
+    width:120px;
+    height:120px;
+    border-radius:30px;
+    background:#f8fbff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    font-size:52px;
+    margin-bottom:24px;
+}
+
+.empty-market-box h2{
+    font-size:36px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.empty-market-box p{
+    margin-top:12px;
+    color:#94a3b8;
+}
+
+@media(max-width:768px){
+
+    .market-graph-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .table-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+/* ========================================= */
+/* REVENUE CHART */
+/* ========================================= */
+
+new Chart(
+
+    document.getElementById(
+        "revenueChart"
+    ),
+
+    {
+
+        type: "line",
+
+        data: {
+
+            labels: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun"
+            ],
+
+            datasets: [{
+
+                data: [
+                    1200,
+                    1800,
+                    2400,
+                    3200,
+                    4100,
+                    5200
+                ],
+
+                borderColor: "#27a9ee",
+
+                backgroundColor:
+                "rgba(39,169,238,0.12)",
+
+                fill: true,
+
+                tension: 0.4
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+/* ========================================= */
+/* SECURITY CHART */
+/* ========================================= */
+
+new Chart(
+
+    document.getElementById(
+        "securityChart"
+    ),
+
+    {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: [
+                "Protected",
+                "Remaining"
+            ],
+
+            datasets: [{
+
+                data: [
+                    96,
+                    4
+                ],
+
+                backgroundColor: [
+                    "#27a9ee",
+                    "#e2e8f0"
+                ],
+
+                borderWidth: 0
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            },
+
+            cutout: "78%"
+
+        }
+
+    }
+
+);
+
+/* ========================================= */
+/* MAIN TRANSACTION GRAPH */
+/* ========================================= */
+
+const dailyData = [
+
+    12,
+    19,
+    14,
+    26,
+    22,
+    31,
+    28
+
+];
+
+const weeklyData = [
+
+    80,
+    95,
+    120,
+    110,
+    145,
+    170,
+    190
+
+];
+
+const monthlyData = [
+
+    320,
+    410,
+    480,
+    530,
+    620,
+    710,
+    820
+
+];
+
+const transactionGraph = new Chart(
+
+    document.getElementById(
+        "transactionChart"
+    ),
+
+    {
+
+        type: "line",
+
+        data: {
+
+            labels: [
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat",
+                "Sun"
+            ],
+
+            datasets: [{
+
+                label: "Daily",
+
+                data: dailyData,
+
+                borderColor: "#27a9ee",
+
+                backgroundColor:
+                "rgba(39,169,238,0.15)",
+
+                fill: true,
+
+                tension: 0.4
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            interaction: {
+
+                mode: "index",
+                intersect: false
+
+            },
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+/* ========================================= */
+/* GRAPH BUTTONS */
+/* ========================================= */
+
+const dailyBtn =
+document.getElementById(
+    "dailyBtn"
+);
+
+const weeklyBtn =
+document.getElementById(
+    "weeklyBtn"
+);
+
+const monthlyBtn =
+document.getElementById(
+    "monthlyBtn"
+);
+
+const graphButtons =
+document.querySelectorAll(
+    ".graph-btn"
+);
+
+function activateGraphButton(button){
+
+    graphButtons.forEach(btn => {
+
+        btn.classList.remove(
+            "active-graph-btn"
+        );
+
+    });
+
+    button.classList.add(
+        "active-graph-btn"
+    );
+
+}
+
+/* DAILY */
+
+dailyBtn.addEventListener(
+
+    "click",
+
+    function(){
+
+        activateGraphButton(
+            dailyBtn
+        );
+
+        transactionGraph.data.datasets[0].label =
+        "Daily";
+
+        transactionGraph.data.datasets[0].data =
+        dailyData;
+
+        transactionGraph.update();
+
+    }
+
+);
+
+/* WEEKLY */
+
+weeklyBtn.addEventListener(
+
+    "click",
+
+    function(){
+
+        activateGraphButton(
+            weeklyBtn
+        );
+
+        transactionGraph.data.datasets[0].label =
+        "Weekly";
+
+        transactionGraph.data.datasets[0].data =
+        weeklyData;
+
+        transactionGraph.update();
+
+    }
+
+);
+
+/* MONTHLY */
+
+monthlyBtn.addEventListener(
+
+    "click",
+
+    function(){
+
+        activateGraphButton(
+            monthlyBtn
+        );
+
+        transactionGraph.data.datasets[0].label =
+        "Monthly";
+
+        transactionGraph.data.datasets[0].data =
+        monthlyData;
+
+        transactionGraph.update();
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

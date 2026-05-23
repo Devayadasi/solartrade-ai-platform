@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Register | P2P Energy Trading
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+
+    <div class="background-wrapper">
+
+        <div class="bg-circle bg-one"></div>
+
+        <div class="bg-circle bg-two"></div>
+
+        <div class="bg-circle bg-three"></div>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main-container">
+
+        <!-- LEFT -->
+
+        <div class="left-section">
+
+            <div class="left-content">
+
+                <div class="top-badge">
+                    ⚡ Smart Renewable Marketplace
+                </div>
+
+                <h1>
+                    Future Of
+                    <span>
+                        Energy Trading
+                    </span>
+                </h1>
+
+                <p>
+                    Register as Producer, Consumer, or Admin and manage renewable energy through a modern smart marketplace platform.
+                </p>
+
+                <div class="feature-grid">
+
+                    <div class="feature-box">
+                        🌱 Green Energy
+                    </div>
+
+                    <div class="feature-box">
+                        📊 Live Analytics
+                    </div>
+
+                    <div class="feature-box">
+                        ⚡ Smart Marketplace
+                    </div>
+
+                    <div class="feature-box">
+                        🛡 Secure Platform
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="right-section">
+
+            <div class="register-card">
+
+                <!-- TOP -->
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+                        ⚡
+                    </div>
+
+                    <h2>
+                        Create Account
+                    </h2>
+
+                    <p>
+                        Join the renewable ecosystem
+                    </p>
+
+                </div>
+
+                <!-- FORM -->
+
+                <form
+                    action="/register-user"
+                    method="POST"
+                >
+
+                    <!-- NAME -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- EMAIL -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- PASSWORD -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Create password"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- CITY -->
+
+                    <div class="input-group">
+
+                        <label>
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            name="city"
+                            placeholder="Enter your city"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- STATE -->
+
+                    <div class="input-group">
+
+                        <label>
+                            State
+                        </label>
+
+                        <input
+                            type="text"
+                            name="state"
+                            placeholder="Enter your state"
+                            required
+                        >
+
+                    </div>
+
+                    <!-- ROLE -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Select Role
+                        </label>
+
+                        <select
+                            name="role"
+                            required
+                        >
+
+                            <option value="">
+                                Choose Role
+                            </option>
+
+                            <option value="producer">
+                                ⚡ Producer
+                            </option>
+
+                            <option value="consumer">
+                                🛒 Consumer
+                            </option>
+
+                            <option value="admin">
+                                🛡 Admin
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="register-btn"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+                <!-- FOOTER -->
+
+                <div class="card-footer">
+
+                    <p>
+                        Already have an account?
+                    </p>
+
+                    <a href="/">
+                        Login Here
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    linear-gradient(
+        135deg,
+        #07111f,
+        #0f172a,
+        #111827
+    );
+    overflow-x:hidden;
+    position:relative;
+}
+
+/* BACKGROUND */
+
+.background-wrapper{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.bg-circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(100px);
+}
+
+.bg-one{
+    width:400px;
+    height:400px;
+    background:#2563eb;
+    top:-120px;
+    left:-120px;
+    opacity:0.35;
+}
+
+.bg-two{
+    width:450px;
+    height:450px;
+    background:#06b6d4;
+    bottom:-160px;
+    right:-100px;
+    opacity:0.25;
+}
+
+.bg-three{
+    width:280px;
+    height:280px;
+    background:#8b5cf6;
+    top:45%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    opacity:0.18;
+}
+
+/* MAIN */
+
+.main-container{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+
+/* LEFT */
+
+.left-section{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px;
+}
+
+.left-content{
+    max-width:560px;
+}
+
+.top-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:
+    rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.1);
+    color:#38bdf8;
+    padding:14px 24px;
+    border-radius:50px;
+    font-size:15px;
+    font-weight:700;
+    backdrop-filter:blur(12px);
+}
+
+.left-content h1{
+    margin-top:34px;
+    font-size:72px;
+    line-height:1.05;
+    font-weight:800;
+    color:white;
+}
+
+.left-content h1 span{
+    color:#38bdf8;
+}
+
+.left-content p{
+    margin-top:24px;
+    color:#cbd5e1;
+    font-size:18px;
+    line-height:1.9;
+}
+
+.feature-grid{
+    margin-top:42px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.feature-box{
+    background:
+    rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    padding:22px;
+    border-radius:22px;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+}
+
+/* RIGHT */
+
+.right-section{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:50px;
+}
+
+.register-card{
+    width:100%;
+    max-width:560px;
+    background:
+    rgba(15,23,42,0.78);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px);
+    padding:46px;
+    border-radius:34px;
+    box-shadow:
+        0 15px 45px rgba(0,0,0,0.35);
+}
+
+.card-top{
+    text-align:center;
+    margin-bottom:34px;
+}
+
+.card-icon{
+    width:88px;
+    height:88px;
+    margin:auto;
+    border-radius:26px;
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:38px;
+    margin-bottom:22px;
+}
+
+.card-top h2{
+    font-size:40px;
+    font-weight:800;
+    color:white;
+}
+
+.card-top p{
+    margin-top:10px;
+    color:#94a3b8;
+    font-size:16px;
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:22px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:10px;
+    color:#e2e8f0;
+    font-size:15px;
+    font-weight:700;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    height:62px;
+    border:none;
+    outline:none;
+    border-radius:18px;
+    padding:0 20px;
+    background:
+    rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    color:white;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.input-group input::placeholder{
+    color:#94a3b8;
+}
+
+.input-group input:focus,
+.input-group select:focus{
+    border:
+    1px solid #38bdf8;
+    box-shadow:
+        0 0 0 4px rgba(56,189,248,0.12);
+}
+
+select option{
+    background:#0f172a;
+    color:white;
+}
+
+/* BUTTON */
+
+.register-btn{
+    width:100%;
+    height:64px;
+    border:none;
+    border-radius:18px;
+    margin-top:10px;
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+    color:white;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.register-btn:hover{
+    transform:translateY(-4px);
+    box-shadow:
+        0 12px 24px rgba(37,99,235,0.35);
+}
+
+/* FOOTER */
+
+.card-footer{
+    margin-top:30px;
+    text-align:center;
+}
+
+.card-footer p{
+    color:#94a3b8;
+    margin-bottom:10px;
+}
+
+.card-footer a{
+    color:#38bdf8;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.card-footer a:hover{
+    text-decoration:underline;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .main-container{
+        grid-template-columns:1fr;
+    }
+
+    .left-section{
+        display:none;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .right-section{
+        padding:24px;
+    }
+
+    .register-card{
+        padding:34px 26px;
+    }
+
+    .card-top h2{
+        font-size:32px;
+    }
+
+}
+
+</style>
+
+</body>
+
+</html>

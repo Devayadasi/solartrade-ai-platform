@@ -1,0 +1,1403 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                🌱
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Renewable Consumer Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/consumer-dashboard">
+                Dashboard
+            </a>
+
+            <a
+                class="active-nav"
+                href="/consumer-marketplace"
+            >
+                Marketplace
+            </a>
+
+            <a href="/consumer-transactions">
+                Transactions
+            </a>
+
+            <a href="/consumer-analytics">
+                Analytics
+            </a>
+
+            <a href="/consumer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Energy Consumer
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- CARD 1 -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                ENERGY REQUIREMENT
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            🔋
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Renewable Usage
+                            </h4>
+
+                            <span>
+                                Smart energy optimization
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:68%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Purchased
+                        </span>
+
+                        <span>
+                            Remaining
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        420
+                    </h2>
+
+                    <p>
+                        kWh Needed
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CARD 2 -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                BEST AVAILABLE PRICE
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        💰
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Lowest Market Rate
+                        </h4>
+
+                        <p>
+                            Renewable energy pricing
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ 7.98
+                        </strong>
+
+                        <span>
+                            ↓ 3.8% lower today
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="consumerPriceChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CARD 3 -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                MONTHLY SAVINGS
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            🌱
+                        </div>
+
+                        <span>
+                            Renewable Savings
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            ₹ 12,450
+                        </strong>
+
+                        <p>
+                            Smart energy savings
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            📈
+                        </div>
+
+                        <span>
+                            Carbon Reduction
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="consumerMiniChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            +18%
+                        </strong>
+
+                        <p>
+                            Eco Impact
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MARKETPLACE GRID -->
+    <!-- ========================================= -->
+
+    <div class="middle-grid">
+
+        <!-- ========================================= -->
+        <!-- LEFT SECTION -->
+        <!-- ========================================= -->
+
+        <div class="large-section">
+
+            <div class="card-header-between">
+
+                <h3>
+                    LIVE ENERGY MARKETPLACE
+                </h3>
+
+                <button class="month-btn">
+                    Real Listings
+                </button>
+
+            </div>
+
+            <!-- FILTER BUTTONS -->
+
+            <div class="premium-market-tabs">
+
+                <button
+                    class="premium-market-tab active-market-tab"
+                    onclick="filterEnergy('all', this)"
+                >
+                    ⚡ All
+                </button>
+
+                <button
+                    class="premium-market-tab"
+                    onclick="filterEnergy('solar', this)"
+                >
+                    ☀ Solar
+                </button>
+
+                <button
+                    class="premium-market-tab"
+                    onclick="filterEnergy('wind', this)"
+                >
+                    🌪 Wind
+                </button>
+
+                <button
+                    class="premium-market-tab"
+                    onclick="filterEnergy('hybrid', this)"
+                >
+                    🌱 Hybrid
+                </button>
+
+            </div>
+
+            {% if listings %}
+
+            <div class="premium-listings-grid">
+
+                {% for listing in listings %}
+
+                <div
+                    class="premium-listing-card energy-card"
+                    data-type="{{ listing.energy_type | lower }}"
+                >
+
+                    <!-- TOP -->
+
+                    <div class="listing-top">
+
+                        <div class="listing-energy">
+
+                            <div class="listing-energy-icon">
+
+                                {% if listing.energy_type|lower == "solar" %}
+                                    ☀
+                                {% elif listing.energy_type|lower == "wind" %}
+                                    🌪
+                                {% elif listing.energy_type|lower == "hybrid" %}
+                                    🌱
+                                {% else %}
+                                    ⚡
+                                {% endif %}
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ listing.energy_type }}
+                                </h3>
+
+                                <p>
+                                    Verified Renewable Producer
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span class="active-status">
+                            LIVE
+                        </span>
+
+                    </div>
+
+                    <!-- DETAILS -->
+
+                    <div class="listing-middle">
+
+                        <div>
+
+                            <span>
+                                Energy
+                            </span>
+
+                            <strong>
+                                {{ listing.energy_amount }} kWh
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Price
+                            </span>
+
+                            <strong>
+                                ₹ {{ listing.price }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PROGRESS -->
+
+                    <div class="listing-progress">
+
+                        <div
+                            class="listing-progress-fill"
+                            style="width:82%;"
+                        ></div>
+
+                    </div>
+
+                    <!-- FOOTER -->
+
+                    <div class="listing-footer">
+
+                        <div class="market-badge">
+                            ⭐ 4.8 Rating
+                        </div>
+
+                        <a
+                            href="/buy-energy/{{ listing.id }}"
+                            class="premium-energy-buy-btn"
+                        >
+                            ⚡ Buy Energy
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-market-box">
+
+                <div class="empty-market-icon">
+                    ⚡
+                </div>
+
+                <h2>
+                    No Listings Available
+                </h2>
+
+                <p>
+                    Producers have not published renewable energy yet.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- RIGHT SECTION -->
+        <!-- ========================================= -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                MARKET INSIGHTS
+            </div>
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        +12%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        Renewable demand increasing
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Best Seller
+                        </p>
+
+                        <strong>
+                            Solar Energy
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Avg Price
+                        </p>
+
+                        <strong>
+                            ₹ 8.10
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            🌱
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Smart Recommendation
+                            </h4>
+
+                            <p>
+                                Buy during off-peak hours
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            SAVE
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Explore Recommendations
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- PREMIUM GRAPH SECTION -->
+    <!-- ========================================= -->
+
+    <div class="premium-chart-section">
+
+        <div class="chart-header">
+
+            <div>
+
+                <h2>
+                    ENERGY MARKET TREND
+                </h2>
+
+                <p>
+                    Live renewable energy analytics
+                </p>
+
+            </div>
+
+            <div class="chart-tabs">
+
+                <button
+                    class="chart-tab active-chart-tab"
+                    onclick="changeChart('demand', this)"
+                >
+                    Demand
+                </button>
+
+                <button
+                    class="chart-tab"
+                    onclick="changeChart('price', this)"
+                >
+                    Prices
+                </button>
+
+                <button
+                    class="chart-tab"
+                    onclick="changeChart('growth', this)"
+                >
+                    Growth
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="premium-chart-container">
+
+            <canvas id="consumerMarketplaceChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- BOTTOM GRID -->
+    <!-- ========================================= -->
+
+    <div class="premium-bottom-grid">
+
+        <!-- SELLERS -->
+
+        <div class="premium-info-card">
+
+            <div class="premium-info-header">
+
+                <h3>
+                    TOP SELLERS
+                </h3>
+
+                <span>
+                    Live Market
+                </span>
+
+            </div>
+
+            <div class="premium-info-list">
+
+                <div class="premium-info-item">
+
+                    <div class="premium-info-left">
+
+                        <div class="premium-circle blue-circle">
+                            ☀
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Solar Farm Alpha
+                            </h4>
+
+                            <p>
+                                Verified renewable producer
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <strong>
+                        ₹ 7.98
+                    </strong>
+
+                </div>
+
+                <div class="premium-info-item">
+
+                    <div class="premium-info-left">
+
+                        <div class="premium-circle green-circle">
+                            🌪
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                EcoGrid Ltd.
+                            </h4>
+
+                            <p>
+                                Premium smart grid supplier
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <strong>
+                        ₹ 8.12
+                    </strong>
+
+                </div>
+
+                <div class="premium-info-item">
+
+                    <div class="premium-info-left">
+
+                        <div class="premium-circle orange-circle">
+                            🌱
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                GreenVolt
+                            </h4>
+
+                            <p>
+                                Sustainable energy network
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <strong>
+                        ₹ 8.45
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PURCHASES -->
+
+        <div class="premium-info-card">
+
+            <div class="premium-info-header">
+
+                <h3>
+                    RECENT PURCHASES
+                </h3>
+
+                <span>
+                    Updated
+                </span>
+
+            </div>
+
+            <div class="premium-info-list">
+
+                <div class="premium-info-item">
+
+                    <div class="premium-info-left">
+
+                        <div class="premium-circle blue-circle">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Purchase #C201
+                            </h4>
+
+                            <p>
+                                Renewable energy purchase
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <strong class="success-text">
+                        Completed
+                    </strong>
+
+                </div>
+
+                <div class="premium-info-item">
+
+                    <div class="premium-info-left">
+
+                        <div class="premium-circle green-circle">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Purchase #C205
+                            </h4>
+
+                            <p>
+                                Smart energy contract
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <strong class="success-text">
+                        Completed
+                    </strong>
+
+                </div>
+
+                <div class="premium-info-item">
+
+                    <div class="premium-info-left">
+
+                        <div class="premium-circle orange-circle">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Purchase #C209
+                            </h4>
+
+                            <p>
+                                Pending verification
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <strong class="warning-text">
+                        Pending
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="premium-actions-card">
+
+            <div class="premium-info-header">
+
+                <h3>
+                    QUICK ACTIONS
+                </h3>
+
+                <span>
+                    Smart Tools
+                </span>
+
+            </div>
+
+            <div class="premium-actions-grid">
+
+                <button onclick="window.location.href='/consumer-marketplace'">
+                    🛒 Buy Energy
+                </button>
+
+                <button onclick="window.location.href='/consumer-analytics'">
+                    📊 Compare Prices
+                </button>
+
+                <button onclick="window.location.href='/consumer-transactions'">
+                    🌱 Carbon Savings
+                </button>
+
+                <button onclick="window.location.href='/consumer-settings'">
+                    ⚡ Smart Recommendation
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- PREMIUM CSS -->
+<!-- ========================================= -->
+
+<style>
+
+.premium-market-tabs{
+    display:flex;
+    gap:14px;
+    margin-top:22px;
+    margin-bottom:26px;
+    flex-wrap:wrap;
+}
+
+.premium-market-tab{
+    border:none;
+    height:48px;
+    padding:0 28px;
+    border-radius:14px;
+    background:#edf4ff;
+    color:#64748b;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.premium-market-tab:hover{
+    transform:translateY(-2px);
+    background:#dbeafe;
+}
+
+.active-market-tab{
+    background:linear-gradient(135deg,#27a9ee,#0ea5e9);
+    color:white;
+    box-shadow:0 12px 24px rgba(39,169,238,0.25);
+}
+
+.premium-listings-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:24px;
+}
+
+.premium-listing-card{
+    background:white;
+    border-radius:26px;
+    padding:26px;
+    box-shadow:0 10px 35px rgba(15,23,42,0.05);
+    border-top:5px solid #27a9ee;
+    transition:0.3s;
+}
+
+.premium-listing-card:hover{
+    transform:translateY(-6px);
+}
+
+.listing-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.listing-energy{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.listing-energy-icon{
+    width:60px;
+    height:60px;
+    border-radius:18px;
+    background:#edf4ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+}
+
+.active-status{
+    background:#22c55e;
+    color:white;
+    padding:10px 18px;
+    border-radius:40px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.listing-middle{
+    display:flex;
+    justify-content:space-between;
+    margin-top:28px;
+}
+
+.listing-middle span{
+    color:#94a3b8;
+}
+
+.listing-middle strong{
+    display:block;
+    margin-top:8px;
+    font-size:30px;
+    color:#0f172a;
+}
+
+.listing-progress{
+    width:100%;
+    height:12px;
+    border-radius:20px;
+    background:#e2e8f0;
+    margin-top:26px;
+    overflow:hidden;
+}
+
+.listing-progress-fill{
+    height:100%;
+    background:linear-gradient(135deg,#27a9ee,#0ea5e9);
+}
+
+.listing-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:28px;
+}
+
+.market-badge{
+    background:linear-gradient(135deg,#27a9ee,#0ea5e9);
+    color:white;
+    padding:12px 20px;
+    border-radius:40px;
+    font-weight:700;
+}
+
+.premium-energy-buy-btn{
+    height:52px;
+    min-width:190px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#27a9ee,#0ea5e9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:700;
+    transition:0.3s;
+}
+
+.premium-energy-buy-btn:hover{
+    transform:translateY(-3px);
+}
+
+.premium-chart-section{
+    background:white;
+    border-radius:28px;
+    padding:34px;
+    margin-top:34px;
+    box-shadow:0 10px 35px rgba(15,23,42,0.05);
+}
+
+.chart-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.chart-tabs{
+    display:flex;
+    gap:14px;
+}
+
+.chart-tab{
+    border:none;
+    height:48px;
+    padding:0 26px;
+    border-radius:14px;
+    background:#edf4ff;
+    color:#64748b;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.active-chart-tab{
+    background:linear-gradient(135deg,#27a9ee,#0ea5e9);
+    color:white;
+}
+
+.premium-chart-container{
+    height:420px;
+}
+
+.premium-bottom-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:26px;
+    margin-top:34px;
+}
+
+.premium-info-card,
+.premium-actions-card{
+    background:white;
+    border-radius:28px;
+    padding:28px;
+    box-shadow:0 10px 35px rgba(15,23,42,0.05);
+}
+
+.premium-info-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:24px;
+}
+
+.premium-info-header h3{
+    font-size:22px;
+}
+
+.premium-info-header span{
+    color:#27a9ee;
+    font-weight:700;
+}
+
+.premium-info-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.premium-info-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    border-radius:18px;
+    background:#f8fbff;
+}
+
+.premium-info-left{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.premium-circle{
+    width:58px;
+    height:58px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+}
+
+.blue-circle{
+    background:#dbeafe;
+}
+
+.green-circle{
+    background:#dcfce7;
+}
+
+.orange-circle{
+    background:#ffedd5;
+}
+
+.success-text{
+    color:#22c55e;
+}
+
+.warning-text{
+    color:#f97316;
+}
+
+.premium-actions-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.premium-actions-grid button{
+    border:none;
+    height:72px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#27a9ee,#0ea5e9);
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.premium-actions-grid button:hover{
+    transform:translateY(-4px);
+}
+
+</style>
+
+<!-- ========================================= -->
+<!-- WORKING JAVASCRIPT -->
+<!-- ========================================= -->
+
+<script>
+
+function filterEnergy(type, element){
+
+    const cards =
+    document.querySelectorAll(
+        '.energy-card'
+    );
+
+    cards.forEach(card => {
+
+        const energyType =
+        card.getAttribute(
+            'data-type'
+        );
+
+        if(type === 'all'){
+
+            card.style.display = 'block';
+
+        }
+
+        else if(
+            energyType === type
+        ){
+
+            card.style.display = 'block';
+
+        }
+
+        else{
+
+            card.style.display = 'none';
+
+        }
+
+    });
+
+    const tabs =
+    document.querySelectorAll(
+        '.premium-market-tab'
+    );
+
+    tabs.forEach(tab => {
+
+        tab.classList.remove(
+            'active-market-tab'
+        );
+
+    });
+
+    element.classList.add(
+        'active-market-tab'
+    );
+
+}
+
+/* =========================================
+WORKING DYNAMIC GRAPH
+========================================= */
+
+const chartButtons =
+document.querySelectorAll(
+'.chart-tab'
+);
+
+const chartLabels =
+[
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun'
+];
+
+const demandData =
+[12,19,15,28,24,32];
+
+const priceData =
+[7,9,8,12,10,15];
+
+const growthData =
+[3,5,8,11,15,20];
+
+const chartCanvas =
+document.getElementById(
+'consumerMarketplaceChart'
+);
+
+const chartContext =
+chartCanvas.getContext('2d');
+
+let marketChart =
+new Chart(chartContext, {
+
+    type:'line',
+
+    data:{
+
+        labels:chartLabels,
+
+        datasets:[{
+
+            label:'Demand',
+
+            data:demandData,
+
+            borderColor:'#27a9ee',
+
+            backgroundColor:
+            'rgba(39,169,238,0.15)',
+
+            fill:true,
+
+            tension:0.4,
+
+            pointRadius:5,
+
+            pointBackgroundColor:'#27a9ee'
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+
+            legend:{
+                display:false
+            }
+
+        },
+
+        scales:{
+
+            y:{
+                beginAtZero:true
+            }
+
+        }
+
+    }
+
+});
+
+function changeChart(type, element){
+
+    chartButtons.forEach(btn => {
+
+        btn.classList.remove(
+            'active-chart-tab'
+        );
+
+    });
+
+    element.classList.add(
+        'active-chart-tab'
+    );
+
+    if(type === 'demand'){
+
+        marketChart.data.datasets[0].data =
+        demandData;
+
+        marketChart.data.datasets[0].label =
+        'Demand';
+
+    }
+
+    if(type === 'price'){
+
+        marketChart.data.datasets[0].data =
+        priceData;
+
+        marketChart.data.datasets[0].label =
+        'Prices';
+
+    }
+
+    if(type === 'growth'){
+
+        marketChart.data.datasets[0].data =
+        growthData;
+
+        marketChart.data.datasets[0].label =
+        'Growth';
+
+    }
+
+    marketChart.update();
+
+}
+
+</script>
+
+{% endblock %}

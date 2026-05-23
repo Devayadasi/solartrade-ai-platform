@@ -1,0 +1,964 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================= -->
+    <!-- NAVBAR -->
+    <!-- ========================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                ⚡
+            </div>
+
+            <div>
+
+                <h2>
+                    Consumer Analytics
+                </h2>
+
+                <p>
+                    Renewable Energy Intelligence
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/consumer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/consumer-marketplace">
+                Marketplace
+            </a>
+
+            <a href="/consumer-transactions">
+                Transactions
+            </a>
+
+            <a
+                href="/consumer-analytics"
+                class="active-nav"
+            >
+                Analytics
+            </a>
+
+            <a href="/consumer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+
+                    {% if session.get('name') %}
+                        {{ session.get('name')[0] | upper }}
+                    {% else %}
+                        C
+                    {% endif %}
+
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.get("name", "Consumer") }}
+                    </h4>
+
+                    <p>
+                        Energy Consumer
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================= -->
+
+    <div class="top-cards">
+
+        <!-- ENERGY -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                ENERGY CONSUMED
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Smart Consumption
+                            </h4>
+
+                            <span>
+                                Renewable energy usage
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:82%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Usage Efficiency
+                        </span>
+
+                        <span>
+                            +14%
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ "%.2f"|format(total_energy) }}
+                    </h2>
+
+                    <p>
+                        kWh Used
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SPENDING -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TOTAL SPENDING
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        💰
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Renewable Purchases
+                        </h4>
+
+                        <p>
+                            Total energy spending
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ "%.2f"|format(total_spent) }}
+                        </strong>
+
+                        <span>
+                            Smart Savings Active
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="revenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CARBON -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                CARBON SAVED
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            🌱
+                        </div>
+
+                        <span>
+                            CO₂ Reduction
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            {{ "%.2f"|format(carbon_saved) }} kg
+                        </strong>
+
+                        <p>
+                            Renewable Impact
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            📈
+                        </div>
+
+                        <span>
+                            Sustainability Score
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="miniChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            96%
+                        </strong>
+
+                        <p>
+                            Efficiency
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- MAIN GRAPH -->
+    <!-- ========================= -->
+
+    <div class="large-section">
+
+        <div class="card-header-between">
+
+            <h3>
+                LIVE ENERGY ANALYTICS
+            </h3>
+
+            <div class="graph-top-tabs">
+
+                <button
+                    class="graph-tab active-graph-tab"
+                    onclick="switchChart('daily', this)"
+                >
+                    Daily
+                </button>
+
+                <button
+                    class="graph-tab"
+                    onclick="switchChart('weekly', this)"
+                >
+                    Weekly
+                </button>
+
+                <button
+                    class="graph-tab"
+                    onclick="switchChart('monthly', this)"
+                >
+                    Monthly
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="advanced-chart-box">
+
+            <canvas id="mainChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- BOTTOM GRID -->
+    <!-- ========================= -->
+
+    <div class="bottom-grid">
+
+        <!-- DISTRIBUTION -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                ENERGY DISTRIBUTION
+            </div>
+
+            <div class="chart-container-small">
+
+                <canvas id="distributionChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- MARKET PERFORMANCE -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                MARKET PERFORMANCE
+            </div>
+
+            <div class="chart-container-small">
+
+                <canvas id="marketChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- SYSTEM STATS -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                SYSTEM STATUS
+            </div>
+
+            <div class="performance-grid">
+
+                <div class="performance-box">
+
+                    <h2>
+                        {{ transactions|length }}
+                    </h2>
+
+                    <p>
+                        Purchases
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        98%
+                    </h2>
+
+                    <p>
+                        Stability
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        94%
+                    </h2>
+
+                    <p>
+                        Smart Usage
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- TRANSACTIONS -->
+    <!-- ========================= -->
+
+    <div class="large-section live-market-section">
+
+        <div class="card-header-between">
+
+            <h3>
+                RECENT ENERGY PURCHASES
+            </h3>
+
+            <span class="market-badge">
+                LIVE TRANSACTIONS
+            </span>
+
+        </div>
+
+        {% if transactions %}
+
+            <div class="premium-listings-grid">
+
+                {% for transaction in transactions %}
+
+                <div class="premium-listing-card">
+
+                    <div class="listing-top">
+
+                        <div class="listing-energy">
+
+                            <div class="listing-energy-icon">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Transaction #{{ transaction.id }}
+                                </h3>
+
+                                <p>
+                                    Renewable Energy Purchase
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <span class="active-status">
+                            Completed
+                        </span>
+
+                    </div>
+
+                    <div class="listing-middle">
+
+                        <div>
+
+                            <span>
+                                Energy
+                            </span>
+
+                            <strong>
+                                {{ "%.2f"|format(transaction.energy_amount) }} kWh
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Amount
+                            </span>
+
+                            <strong>
+                                ₹ {{ "%.2f"|format(transaction.total_price) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="listing-progress">
+
+                        <div
+                            class="listing-progress-fill"
+                            style="width:88%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-market-box">
+
+                <div class="empty-market-icon">
+                    📊
+                </div>
+
+                <h2>
+                    No Analytics Available
+                </h2>
+
+                <p>
+                    Your energy analytics will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ========================= -->
+
+    <div class="bottom-grid">
+
+        <div class="quick-actions-premium">
+
+            <div class="section-heading">
+                QUICK ACTIONS
+            </div>
+
+            <div class="action-buttons-grid">
+
+                <button
+                    onclick="window.location.href='/consumer-dashboard'"
+                >
+                    ⚡ Dashboard
+                </button>
+
+                <button
+                    onclick="window.location.href='/consumer-marketplace'"
+                >
+                    📈 Marketplace
+                </button>
+
+                <button
+                    onclick="window.location.href='/consumer-transactions'"
+                >
+                    💰 Transactions
+                </button>
+
+                <button
+                    onclick="window.location.href='/consumer-settings'"
+                >
+                    ⚙ Settings
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="motivation-card premium-motivation">
+
+            <h3>
+                🌱 GREEN ENERGY IMPACT
+            </h3>
+
+            <p>
+                Your renewable energy usage continues to improve sustainability and reduce carbon emissions across the energy marketplace.
+            </p>
+
+            <span>
+                Smart renewable consumption is helping build a cleaner future.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- CHART JS -->
+<!-- ========================= -->
+
+<script>
+
+let analyticsChart;
+
+const dailyData = [120, 180, 150, 220, 260, 210, 280];
+const weeklyData = [900, 1200, 1500, 1800, 2100, 2400];
+const monthlyData = [5000, 7000, 8500, 10000, 12000, 14500];
+
+const labelsMap = {
+
+    daily: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+
+    weekly: ['W1','W2','W3','W4','W5','W6'],
+
+    monthly: ['Jan','Feb','Mar','Apr','May','Jun']
+
+};
+
+const dataMap = {
+
+    daily: dailyData,
+
+    weekly: weeklyData,
+
+    monthly: monthlyData
+
+};
+
+function createMainChart(type){
+
+    const ctx =
+    document.getElementById(
+        'mainChart'
+    );
+
+    if(analyticsChart){
+        analyticsChart.destroy();
+    }
+
+    analyticsChart =
+    new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+            labels: labelsMap[type],
+
+            datasets: [{
+
+                label: 'Energy Usage',
+
+                data: dataMap[type],
+
+                borderColor: '#22c55e',
+
+                backgroundColor:
+                'rgba(34,197,94,0.12)',
+
+                fill: true,
+
+                tension: 0.4,
+
+                borderWidth: 4,
+
+                pointRadius: 5
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+createMainChart('daily');
+
+function switchChart(type, element){
+
+    document
+    .querySelectorAll('.graph-tab')
+    .forEach(btn => {
+
+        btn.classList.remove(
+            'active-graph-tab'
+        );
+
+    });
+
+    element.classList.add(
+        'active-graph-tab'
+    );
+
+    createMainChart(type);
+
+}
+
+/* ========================= */
+/* REVENUE CHART */
+/* ========================= */
+
+new Chart(
+
+    document.getElementById(
+        'revenueChart'
+    ),
+
+    {
+
+        type: 'bar',
+
+        data: {
+
+            labels: [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun'
+            ],
+
+            datasets: [{
+
+                data: [
+                    1200,
+                    1800,
+                    1600,
+                    2400,
+                    3000,
+                    2800
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+/* ========================= */
+/* MINI CHART */
+/* ========================= */
+
+new Chart(
+
+    document.getElementById(
+        'miniChart'
+    ),
+
+    {
+
+        type: 'doughnut',
+
+        data: {
+
+            labels: [
+                'Used',
+                'Saved'
+            ],
+
+            datasets: [{
+
+                data: [
+                    96,
+                    4
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+/* ========================= */
+/* DISTRIBUTION CHART */
+/* ========================= */
+
+new Chart(
+
+    document.getElementById(
+        'distributionChart'
+    ),
+
+    {
+
+        type: 'pie',
+
+        data: {
+
+            labels: [
+                'Solar',
+                'Wind',
+                'Hydro'
+            ],
+
+            datasets: [{
+
+                data: [
+                    55,
+                    25,
+                    20
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
+        }
+
+    }
+
+);
+
+/* ========================= */
+/* MARKET CHART */
+/* ========================= */
+
+new Chart(
+
+    document.getElementById(
+        'marketChart'
+    ),
+
+    {
+
+        type: 'line',
+
+        data: {
+
+            labels: [
+                'Mon',
+                'Tue',
+                'Wed',
+                'Thu',
+                'Fri',
+                'Sat',
+                'Sun'
+            ],
+
+            datasets: [{
+
+                data: [
+                    40,
+                    60,
+                    55,
+                    75,
+                    90,
+                    82,
+                    95
+                ],
+
+                fill: true,
+
+                tension: 0.4
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,801 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                🌱
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Smart Renewable Energy Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a class="active-nav" href="/consumer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/consumer-marketplace">
+                Marketplace
+            </a>
+
+            <a href="/consumer-transactions">
+                Transactions
+            </a>
+
+            <a href="/consumer-analytics">
+                Analytics
+            </a>
+
+            <a href="/consumer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Eco Member
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- PURCHASED ENERGY -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                PURCHASED ENERGY
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Renewable Usage
+                            </h4>
+
+                            <span>
+                                Live energy purchased
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div class="compact-progress-fill"></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            This Week
+                        </span>
+
+                        <span>
+                            Today
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ "%.0f"|format(total_energy * 100) }} kWh
+                    </h2>
+
+                    <p>
+                        +5%
+                        ({{ transactions|length }} purchases)
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CARBON SAVED -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                CARBON SAVED
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            🌱
+                        </div>
+
+                        <span>
+                            CO₂ Reduction
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            {{ "%.2f"|format(carbon_saved) }} kg
+                        </strong>
+
+                        <p>
+                            Green Impact
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            🌍
+                        </div>
+
+                        <span>
+                            Sustainability
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="consumerImpactChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            +12%
+                        </strong>
+
+                        <p>
+                            Eco Growth
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MONEY SPENT -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TOTAL SPENT
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        💰
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Marketplace Spending
+                        </h4>
+
+                        <p>
+                            Renewable energy investment
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ "%.0f"|format(total_spent) }}
+                        </strong>
+
+                        <span>
+                            {{ transactions|length }} Transactions
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="consumerSpendingChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MIDDLE GRID -->
+    <!-- ========================================= -->
+
+    <div class="middle-grid">
+
+        <!-- LEFT SECTION -->
+
+        <div class="large-section">
+
+            <div class="section-heading">
+                CONSUMER ENERGY ANALYTICS
+            </div>
+
+            <div class="advanced-stats-layout">
+
+                <!-- LEFT ANALYTICS -->
+
+                <div class="advanced-stats-list">
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon yellow-bg">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Energy Purchased
+                                </h4>
+
+                                <p>
+                                    +4% This Week
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                {{ "%.0f"|format(total_energy * 100) }} kWh
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon blue-bg">
+                                💳
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Total Transactions
+                                </h4>
+
+                                <p>
+                                    Marketplace Purchases
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                {{ transactions|length }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon green-bg">
+                                🌱
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Green Contribution
+                                </h4>
+
+                                <p>
+                                    Renewable Support
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                {{ "%.0f"|format(carbon_saved) }} kg
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="advanced-stat-item">
+
+                        <div class="advanced-stat-left">
+
+                            <div class="advanced-icon purple-bg">
+                                📈
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Sustainability Score
+                                </h4>
+
+                                <p>
+                                    Eco Rating
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="advanced-stat-right">
+
+                            <strong>
+                                92%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- GRAPH -->
+
+                <div class="advanced-graph-section">
+
+                    <div class="graph-top-tabs">
+
+                        <button
+                            class="graph-tab active-graph-tab"
+                            id="usageBtn"
+                        >
+                            Energy Usage
+                        </button>
+
+                        <button
+                            class="graph-tab"
+                            id="spendingBtn"
+                        >
+                            Spending
+                        </button>
+
+                    </div>
+
+                    <div class="advanced-chart-box">
+
+                        <canvas id="consumerAnalyticsChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BEST MARKETPLACE DEALS -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                BEST MARKET DEALS
+            </div>
+
+            {% if listings and listings|length > 0 %}
+
+                {% for listing in listings[:2] %}
+
+                <div class="premium-offer-card">
+
+                    <div class="offer-green-box">
+
+                        <div class="offer-growth">
+                            +5.8%
+                        </div>
+
+                        <div class="offer-growth-text">
+                            Lower than average market price
+                        </div>
+
+                    </div>
+
+                    <div class="offer-details-grid">
+
+                        <div>
+
+                            <p>
+                                Energy Type
+                            </p>
+
+                            <strong>
+                                {{ listing.energy_type }}
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <p>
+                                Availability
+                            </p>
+
+                            <strong>
+                                Live
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-box">
+
+                        <div class="energy-offer-left">
+
+                            <div class="energy-icon-small">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    {{ listing.energy_type }}
+                                </h4>
+
+                                <p>
+                                    {{ "%.2f"|format(listing.energy_amount) }} kWh
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="energy-offer-right">
+
+                            <strong>
+                                ₹ {{ "%.2f"|format(listing.price) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="premium-sell-btn"
+                        onclick="window.location.href='/buy-energy/{{ listing.id }}'"
+                    >
+                        Buy Energy
+                    </button>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        +5.8%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        Lower than average market price
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Energy Type
+                        </p>
+
+                        <strong>
+                            Solar
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Availability
+                        </p>
+
+                        <strong>
+                            Live
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Solar Energy
+                            </h4>
+
+                            <p>
+                                400 kWh
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            ₹ 287
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Buy Energy
+                </button>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MAP SECTION -->
+    <!-- ========================================= -->
+
+    <div class="map-main-grid">
+
+        <!-- LIVE MAP -->
+
+        <div class="map-section">
+
+            <div class="map-header">
+
+                <h3>
+                    LIVE CONSUMER ENERGY MAP
+                </h3>
+
+                <span>
+                    Nearby Renewable Producers
+                </span>
+
+            </div>
+
+            <div id="energyMap"></div>
+
+        </div>
+
+        <!-- RIGHT WIDGET -->
+
+        <div class="offer-widget">
+
+            <div class="widget-badge">
+                LIVE
+            </div>
+
+            <h4>
+                SMART ENERGY RECOMMENDATION
+            </h4>
+
+            <div class="widget-top-grid">
+
+                <div>
+
+                    <span>
+                        ⚡
+                    </span>
+
+                    <p>
+                        Best Energy
+                    </p>
+
+                    <strong>
+                        Solar
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        📍
+                    </span>
+
+                    <p>
+                        Region
+                    </p>
+
+                    <strong>
+                        Nearby
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        💳
+                    </span>
+
+                    <p>
+                        Billing
+                    </p>
+
+                    <strong>
+                        Monthly
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        📈
+                    </span>
+
+                    <p>
+                        Savings
+                    </p>
+
+                    <strong>
+                        +12%
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="widget-energy-box">
+
+                <div class="green-percent">
+                    Recommended
+                </div>
+
+                <div class="energy-right">
+
+                    <h3>
+                        Smart Solar Package
+                    </h3>
+
+                    <p>
+                        540 kWh Available
+                    </p>
+
+                    <strong>
+                        ₹ 329
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <button class="widget-btn">
+                Explore Marketplace
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

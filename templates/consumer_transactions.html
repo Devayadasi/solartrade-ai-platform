@@ -1,0 +1,655 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- ========================================= -->
+    <!-- PREMIUM NAVBAR -->
+    <!-- ========================================= -->
+
+    <div class="navbar">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                🛒
+            </div>
+
+            <div>
+
+                <h2>
+                    P2P Energy Trading
+                </h2>
+
+                <p>
+                    Smart Renewable Energy Marketplace
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/consumer-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/consumer-marketplace">
+                Marketplace
+            </a>
+
+            <a
+                class="active-nav"
+                href="/consumer-transactions"
+            >
+                Transactions
+            </a>
+
+            <a href="/consumer-analytics">
+                Analytics
+            </a>
+
+            <a href="/consumer-settings">
+                Settings
+            </a>
+
+        </div>
+
+        <div class="profile-section">
+
+            <div class="notification-box">
+                🔔
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    {{ session.name[0] | upper }}
+                </div>
+
+                <div>
+
+                    <h4>
+                        {{ session.name }}
+                    </h4>
+
+                    <p>
+                        Energy Buyer
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- TOP CARDS -->
+    <!-- ========================================= -->
+
+    <div class="top-cards">
+
+        <!-- TOTAL PURCHASES -->
+
+        <div class="stat-card compact-card">
+
+            <div class="card-title">
+                TOTAL PURCHASES
+            </div>
+
+            <div class="compact-body">
+
+                <div class="compact-left">
+
+                    <div class="balance-row">
+
+                        <div class="mini-energy-icon">
+                            🛒
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Energy Purchases
+                            </h4>
+
+                            <span>
+                                Completed renewable orders
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="compact-progress">
+
+                        <div
+                            class="compact-progress-fill"
+                            style="width:84%;"
+                        ></div>
+
+                    </div>
+
+                    <div class="progress-labels">
+
+                        <span>
+                            Monthly Growth
+                        </span>
+
+                        <span>
+                            +16%
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="compact-right">
+
+                    <h2>
+                        {{ transactions|length }}
+                    </h2>
+
+                    <p>
+                        Successful Purchases
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL SPENDING -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                TOTAL SPENDING
+            </div>
+
+            <div class="earnings-wrapper">
+
+                <div class="earnings-top">
+
+                    <div class="earnings-icon">
+                        💳
+                    </div>
+
+                    <div class="earnings-info">
+
+                        <h4>
+                            Consumer Spending
+                        </h4>
+
+                        <p>
+                            Renewable energy expenses
+                        </p>
+
+                    </div>
+
+                    <div class="earnings-value">
+
+                        <strong>
+                            ₹ {{ transactions | sum(attribute='total_price') }}
+                        </strong>
+
+                        <span>
+                            Smart energy investment
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="earnings-chart-wrap">
+
+                    <canvas id="consumerSpendingChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PAYMENT STATUS -->
+
+        <div class="stat-card">
+
+            <div class="card-title">
+                PAYMENT STATUS
+            </div>
+
+            <div class="contracts-wrapper">
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon green-bg">
+                            ✅
+                        </div>
+
+                        <span>
+                            Completed Payments
+                        </span>
+
+                    </div>
+
+                    <div class="contract-right">
+
+                        <strong>
+                            96%
+                        </strong>
+
+                        <p>
+                            Successful Transactions
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="contract-item">
+
+                    <div class="contract-left">
+
+                        <div class="contract-icon blue-bg">
+                            ⚡
+                        </div>
+
+                        <span>
+                            Energy Usage
+                        </span>
+
+                    </div>
+
+                    <div class="mini-profit-chart">
+
+                        <canvas id="consumerMiniChart"></canvas>
+
+                    </div>
+
+                    <div class="profit-right">
+
+                        <strong>
+                            +14%
+                        </strong>
+
+                        <p>
+                            Smart Consumption
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- MIDDLE GRID -->
+    <!-- ========================================= -->
+
+    <div class="middle-grid">
+
+        <!-- PURCHASE HISTORY -->
+
+        <div class="large-section">
+
+            <div class="card-header-between">
+
+                <h3>
+                    PURCHASE HISTORY
+                </h3>
+
+                <button class="month-btn">
+                    Latest Transactions
+                </button>
+
+            </div>
+
+            {% if transactions %}
+
+                <div class="premium-transactions-list">
+
+                    {% for transaction in transactions %}
+
+                    <div class="premium-transaction-item">
+
+                        <div class="transaction-left">
+
+                            <div class="transaction-icon">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    Purchase #{{ transaction.id }}
+                                </h4>
+
+                                <p>
+                                    {{ transaction.energy_amount }} kWh Purchased
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="transaction-middle">
+
+                            <span>
+                                Amount Paid
+                            </span>
+
+                            <strong>
+                                ₹ {{ transaction.total_price }}
+                            </strong>
+
+                        </div>
+
+                        <div class="transaction-middle">
+
+                            <span>
+                                Purchase Date
+                            </span>
+
+                            <strong>
+                                {{ transaction.created_at.strftime('%d %b %Y') }}
+                            </strong>
+
+                        </div>
+
+                        <div class="transaction-right">
+
+                            <span class="active-status">
+                                Completed
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-market-box">
+
+                    <div class="empty-market-icon">
+                        🛒
+                    </div>
+
+                    <h2>
+                        No Purchases Yet
+                    </h2>
+
+                    <p>
+                        Your renewable energy purchases will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- CONSUMER INSIGHTS -->
+
+        <div class="offer-section">
+
+            <div class="section-heading">
+                CONSUMER INSIGHTS
+            </div>
+
+            <div class="premium-offer-card">
+
+                <div class="offer-green-box">
+
+                    <div class="offer-growth">
+                        +21%
+                    </div>
+
+                    <div class="offer-growth-text">
+                        Renewable usage growth
+                    </div>
+
+                </div>
+
+                <div class="offer-details-grid">
+
+                    <div>
+
+                        <p>
+                            Best Purchase Day
+                        </p>
+
+                        <strong>
+                            Sunday
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Preferred Energy
+                        </p>
+
+                        <strong>
+                            Solar
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="energy-offer-box">
+
+                    <div class="energy-offer-left">
+
+                        <div class="energy-icon-small">
+                            🌱
+                        </div>
+
+                        <div>
+
+                            <h4>
+                                Eco Savings
+                            </h4>
+
+                            <p>
+                                Smart renewable optimization
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="energy-offer-right">
+
+                        <strong>
+                            ₹ 5.42
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button class="premium-sell-btn">
+                    Download Consumer Report
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- ENERGY ANALYTICS -->
+    <!-- ========================================= -->
+
+    <div class="large-section live-market-section">
+
+        <div class="card-header-between">
+
+            <h3>
+                ENERGY ANALYTICS
+            </h3>
+
+            <div class="graph-top-tabs">
+
+                <button
+                    class="graph-tab active-graph-tab"
+                    id="weeklyEnergyBtn"
+                >
+                    Weekly
+                </button>
+
+                <button
+                    class="graph-tab"
+                    id="monthlyEnergyBtn"
+                >
+                    Monthly
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="advanced-chart-box">
+
+            <canvas id="consumerAnalyticsChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================= -->
+    <!-- BOTTOM GRID -->
+    <!-- ========================================= -->
+
+    <div class="bottom-grid">
+
+        <!-- PERFORMANCE -->
+
+        <div class="performance-section">
+
+            <div class="section-heading">
+                PURCHASE PERFORMANCE
+            </div>
+
+            <div class="performance-grid">
+
+                <div class="performance-box">
+
+                    <h2>
+                        96%
+                    </h2>
+
+                    <p>
+                        Successful
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        3%
+                    </h2>
+
+                    <p>
+                        Pending
+                    </p>
+
+                </div>
+
+                <div class="performance-box">
+
+                    <h2>
+                        1%
+                    </h2>
+
+                    <p>
+                        Refunded
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="quick-actions-premium">
+
+            <div class="section-heading">
+                QUICK ACTIONS
+            </div>
+
+            <div class="action-buttons-grid">
+
+                <button
+                    onclick="window.location.href='/consumer-marketplace'"
+                >
+                    ⚡ Buy Energy
+                </button>
+
+                <button
+                    onclick="window.location.href='/consumer-analytics'"
+                >
+                    📊 Usage Analytics
+                </button>
+
+                <button
+                    onclick="window.location.href='/consumer'"
+                >
+                    🌱 Carbon Insights
+                </button>
+
+                <button
+                    onclick="window.location.href='/consumer-settings'"
+                >
+                    ⚙ Consumer Settings
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- MOTIVATION -->
+
+        <div class="motivation-card premium-motivation">
+
+            <h3>
+                🌍 CLEAN ENERGY IMPACT
+            </h3>
+
+            <p>
+                Your renewable energy purchases are helping reduce global carbon emissions and supporting sustainable energy producers.
+            </p>
+
+            <span>
+                Every green purchase builds a cleaner and smarter future.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
